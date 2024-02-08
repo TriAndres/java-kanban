@@ -21,6 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private Node<Task> head;
+    private Node<Task> tail;
     private int size = 0;
     private final Map<Integer, Task> taskMap;
 
@@ -42,9 +43,9 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void add(Task task) {
         addFirst(task);
-        taskMap.put(head.data.getId(), head.data);
-        if (size > 10) {
-            remove(size);
+        taskMap.put(size, head.data);
+        if (taskMap.size() > 10) {
+            remove(taskMap.size() - 10);
         }
     }
 

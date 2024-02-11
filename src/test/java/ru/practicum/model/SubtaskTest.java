@@ -1,14 +1,14 @@
 package ru.practicum.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class SubtaskTest {
+public class SubtaskTest {
 
     @Test
-    void getIdEpic() {
+    public void getIdEpic() {
     }
 
     @Test
-    void setIdEpic() {
+    public void setIdEpic() {
     }
 }

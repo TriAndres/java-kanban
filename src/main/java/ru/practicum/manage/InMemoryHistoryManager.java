@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    class Node<E> {
+    static class Node<E> {
         public E data;
         public Node<E> next;
         public Node<E> prev;
@@ -22,40 +22,43 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head;
     private Node<Task> tail;
-    private int size = 0;
-    private final Map<Integer, Task> taskMap;
+    private final Map<Integer, Node<Task>> taskMap = new HashMap<>();
 
-    public InMemoryHistoryManager() {
-        taskMap = new HashMap<>();
-    }
-
-    private void addFirst(Task task) {
-        final Node<Task> oldHead = head;
-        final Node<Task> newNode = new Node<>(null, task, oldHead);
-        head = newNode;
-        if (oldHead == null)
-            head = newNode;
-        else
-            oldHead.prev = newNode;
-        size++;
-    }
-
-    @Override
-    public void add(Task task) {
-        addFirst(task);
-        taskMap.put(size, head.data);
-        if (taskMap.size() > 10) {
-            remove(taskMap.size() - 10);
+    private void linkLast(Task task) {
+        if (head == null) {
+            head = new Node<>(null, task, null);
+            tail = head;
+        } else if (head.next == null) {
+            tail = new Node<>(head, task, null);
+            head.next = tail;
         }
     }
 
     @Override
+    public void add(Task task) {
+        if (taskMap.containsKey(task.getId())) {
+            remove(task.getId());
+        }
+        linkLast(task);
+        taskMap.put(task.getId(), tail);
+    }
+
+    @Override
     public void remove(int id) {
-        taskMap.remove(id);
+        if (taskMap.containsKey(id)) {
+            taskMap.remove(id);
+        }
     }
 
     @Override
     public List<Task> getHistory() {
-        return new ArrayList<>(taskMap.values());
+        List<Task> list = new ArrayList<>();
+        Node<Task> currentNode = head;
+        list.add(head.data);
+        while (currentNode.next != null) {
+            currentNode = currentNode.next;
+            list.add(currentNode.data);
+        }
+        return list;
     }
 }

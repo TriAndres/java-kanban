@@ -1,58 +1,57 @@
 package ru.practicum.manage;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static junit.framework.TestCase.*;
+import static org.junit.Assert.assertEquals;
 import static ru.practicum.model.Status.NEW;
 
-class InMemoryTaskManagerTest {
+public class InMemoryTaskManagerTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
-
     @Test
-    void getListTask() {
+    public void getListTask() {
     }
 
     @Test
-    void getListEpic() {
+    public void getListEpic() {
     }
 
     @Test
-    void getListSubtask() {
+    public void getListSubtask() {
     }
 
     @Test
-    void deleteTask() {
+    public void deleteTask() {
     }
 
     @Test
-    void deleteEpic() {
+    public void deleteEpic() {
     }
 
     @Test
-    void deleteSubtask() {
+    public void deleteSubtask() {
     }
 
     @Test
-    void getIdTask() {
+    public void getIdTask() {
     }
 
     @Test
-    void getIdEpic() {
+    public void getIdEpic() {
     }
 
     @Test
-    void getIdSubtask() {
+    public void getIdSubtask() {
     }
 
     @Test
-    void addTask() {
+    public void addTask() {
         Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task).getId();
 
@@ -64,13 +63,12 @@ class InMemoryTaskManagerTest {
         final List<Task> tasks = inMemoryTaskManager.getTasks();
 
         assertNotNull(tasks);//"Задачи не возвращаются."
-        Integer id = 1;
-        assertEquals(id, tasks.size()); //"Неверное количество задач."
+        assertEquals(1, tasks.size());//Неверное количество задач
         assertEquals(task, tasks.get(0));//"Задачи не совпадают."
     }
 
     @Test
-    void addEpic() {
+    public void addEpic() {
         Epic epic = new Epic("Test addNewTask", "Test addNewTask description", NEW);
         final int epicId = inMemoryTaskManager.addNewTask(epic).getId();
 
@@ -82,13 +80,12 @@ class InMemoryTaskManagerTest {
         final List<Task> tasks = inMemoryTaskManager.getTasks();
 
         assertNotNull(tasks);//"Задачи не возвращаются."
-        Integer id = 1;
-        assertEquals(id, tasks.size()); //"Неверное количество задач."
+        assertEquals(1, tasks.size()); //"Неверное количество задач."
         assertEquals(epic, tasks.get(0));//"Задачи не совпадают."
     }
 
     @Test
-    void addSubtask() {
+    public void addSubtask() {
         Subtask subtask = new Subtask("Test addNewTask", "Test addNewTask description", NEW);
         final int subtaskId = inMemoryTaskManager.addNewTask(subtask).getId();
 
@@ -100,37 +97,36 @@ class InMemoryTaskManagerTest {
         final List<Task> tasks = inMemoryTaskManager.getTasks();
 
         assertNotNull(tasks);//"Задачи не возвращаются."
-        Integer id = 1;
-        assertEquals(id, tasks.size()); //"Неверное количество задач."
+        assertEquals(1, tasks.size()); //"Неверное количество задач."
         assertEquals(subtask, tasks.get(0));//"Задачи не совпадают."
     }
 
     @Test
-    void updateTask() {
+    public void updateTask() {
     }
 
     @Test
-    void updateEpic() {
+    public void updateEpic() {
     }
 
     @Test
-    void updateSubtask() {
+    public void updateSubtask() {
     }
 
     @Test
-    void deleteIdTask() {
+    public void deleteIdTask() {
     }
 
     @Test
-    void deleteIdEpic() {
+    public void deleteIdEpic() {
     }
 
     @Test
-    void deleteIdSubtask() {
+    public void deleteIdSubtask() {
     }
 
     @Test
-    void add() {
+    public void add() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
         task.setId(1);
@@ -139,19 +135,18 @@ class InMemoryTaskManagerTest {
         historyManager.getHistory();
         List<Task> history = historyManager.getHistory();
         assertNotNull(history); //"История не пустая."
-        Integer id = 1;
-        assertEquals(id, history.size());//"История не пустая."
+        assertEquals(1, history.size());//"История не пустая."
     }
 
     @Test
-    void getHistory() {
+    public void getHistory() {
     }
 
     @Test
-    void getListSubtaskIdEpic() {
+    public void getListSubtaskIdEpic() {
     }
 
     @Test
-    void statusEpic() {
+    public void statusEpic() {
     }
 }

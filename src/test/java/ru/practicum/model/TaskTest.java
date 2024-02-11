@@ -1,50 +1,51 @@
 package ru.practicum.model;
 
-import org.junit.jupiter.api.Test;
 
-class TaskTest {
+import org.junit.Test;
+
+public class TaskTest {
 
     @Test
-    void getId() {
+    public void getId() {
     }
 
     @Test
-    void setId() {
+    public void setId() {
     }
 
     @Test
-    void getTitle() {
+    public void getTitle() {
     }
 
     @Test
-    void setTitle() {
+    public void setTitle() {
     }
 
     @Test
-    void getDescription() {
+    public void getDescription() {
     }
 
     @Test
-    void setDescription() {
+    public void setDescription() {
     }
 
     @Test
-    void getStatus() {
+    public void getStatus() {
     }
 
     @Test
-    void setStatus() {
+    public void setStatus() {
     }
 
     @Test
-    void testEquals() {
+    public void testEquals() {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
     }
 }

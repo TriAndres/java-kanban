@@ -6,7 +6,7 @@ import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
-public class Main {
+public class App {
     public static void main(String[] args) {
         InMemoryTaskManager manage = new InMemoryTaskManager();
 
@@ -63,10 +63,10 @@ public class Main {
         manage.addNewEpic(new Epic("*** 4 эпик ***"));
         Epic epic4 = manage.getEpic(4);
 
-//        ru.practicum.manage.addSubtask(new ru.practicum.model.Subtask("1 подзадача", 4));
-//        ru.practicum.model.Subtask subtask5 = ru.practicum.manage.getIdSubtask(5);
-//        subtask5.setStatus(ru.practicum.model.Status.DONE);
-//        ru.practicum.manage.statusEpic(epic4);////
+//        manage.addSubtask(new Subtask("1 подзадача", 4));
+//        Subtask subtask5 = manage.getIdSubtask(5);
+//        subtask5.setStatus(Status.DONE);
+//        manage.statusEpic(epic4);////
 
 
 //////////////////////////////////////////////////////////////////////////////////////

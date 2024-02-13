@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    static class Node<E> {
+    private static class Node<E> {
         public E data;
         public Node<E> next;
         public Node<E> prev;
@@ -39,13 +39,16 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (taskMap.containsKey(task.getId())) {
             remove(task.getId());
         }
-        linkLast(task);
-        taskMap.put(task.getId(), tail);
+        if (task != null) {
+            linkLast(task);
+            taskMap.put(task.getId(), tail);
+        }
     }
 
     @Override
     public void remove(int id) {
         if (taskMap.containsKey(id)) {
+            removeNode(taskMap.get(id));
             taskMap.remove(id);
         }
     }
@@ -60,5 +63,16 @@ public class InMemoryHistoryManager implements HistoryManager {
             list.add(currentNode.data);
         }
         return list;
+    }
+
+    public void removeNode(Node<Task> node) {
+        if (node.prev != null && node.next != null) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        } else if (node.prev != null) {
+            tail = node.prev;
+        } else if (node.next != null) {
+            head = node.next;
+        }
     }
 }

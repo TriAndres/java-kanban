@@ -1,6 +1,6 @@
 package ru.practicum.manage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;

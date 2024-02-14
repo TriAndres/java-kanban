@@ -38,6 +38,4 @@ public interface TaskManager {
     void deleteIdEpic(Integer id);
     void deleteIdSubtask(Integer id);
 
-    List<Task> getHistory();
-
 }

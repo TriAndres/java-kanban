@@ -1,6 +1,7 @@
 package ru.practicum.manage;
 
-//import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
@@ -8,52 +9,31 @@ import ru.practicum.model.Task;
 
 import java.util.List;
 
-//import static junit.framework.TestCase.*;
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.practicum.model.Status.NEW;
 
 public class InMemoryTaskManagerTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-
+    //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
-    public void getListTask() {
+    public void equalsClassTaskId() {
+        Task task = new Task("title", "description", NEW);
+        final int idTask = inMemoryTaskManager.addNewTask(task).getId();
+
+        Assertions.assertEquals(idTask, inMemoryTaskManager.addNewTask(task).getId());
     }
 
+    //*проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
-    public void getListEpic() {
+    public void equalsClassEpicId() {
+        Epic epic = new Epic("title", "description", NEW);
+        final int idEpic = inMemoryTaskManager.addNewEpic(epic).getId();
+
+        Assertions.assertEquals(idEpic, inMemoryTaskManager.addNewEpic(epic).getId());
     }
 
-    @Test
-    public void getListSubtask() {
-    }
-
-    @Test
-    public void deleteTask() {
-    }
-
-    @Test
-    public void deleteEpic() {
-    }
-
-    @Test
-    public void deleteSubtask() {
-    }
-
-    @Test
-    public void getIdTask() {
-    }
-
-    @Test
-    public void getIdEpic() {
-    }
-
-    @Test
-    public void getIdSubtask() {
-    }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void addTask() {
         Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
@@ -105,29 +85,6 @@ public class InMemoryTaskManagerTest {
         assertEquals(subtask, tasks.get(0));//"Задачи не совпадают."
     }
 
-    @Test
-    public void updateTask() {
-    }
-
-    @Test
-    public void updateEpic() {
-    }
-
-    @Test
-    public void updateSubtask() {
-    }
-
-    @Test
-    public void deleteIdTask() {
-    }
-
-    @Test
-    public void deleteIdEpic() {
-    }
-
-    @Test
-    public void deleteIdSubtask() {
-    }
 
     @Test
     public void add() {
@@ -142,15 +99,5 @@ public class InMemoryTaskManagerTest {
         assertEquals(1, history.size());//"История не пустая."
     }
 
-    @Test
-    public void getHistory() {
-    }
 
-    @Test
-    public void getListSubtaskIdEpic() {
-    }
-
-    @Test
-    public void statusEpic() {
-    }
 }

@@ -29,6 +29,13 @@ public class Task {
         this.id = getId();
     }
 
+    public Task(Integer id, String title, String description, Status status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }

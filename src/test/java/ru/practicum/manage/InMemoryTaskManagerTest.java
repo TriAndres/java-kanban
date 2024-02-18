@@ -15,22 +15,23 @@ import static ru.practicum.model.Status.NEW;
 
 public class InMemoryTaskManagerTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+
     //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
     public void equalsClassTaskId() {
-        Task task = new Task("title", "description", NEW);
+        Task task = new Task(1,"title", "description", NEW);
         final int idTask = inMemoryTaskManager.addNewTask(task).getId();
 
-        Assertions.assertEquals(idTask, inMemoryTaskManager.addNewTask(task).getId());
+        Assertions.assertEquals(task.getId(),idTask);
     }
 
     //*проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
     public void equalsClassEpicId() {
         Epic epic = new Epic("title", "description", NEW);
-        final int idEpic = inMemoryTaskManager.addNewEpic(epic).getId();
+        final Integer idEpic = inMemoryTaskManager.addNewEpic(epic).getId();
 
-        Assertions.assertEquals(idEpic, inMemoryTaskManager.addNewEpic(epic).getId());
+        assertEquals(epic.getId(), idEpic);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////

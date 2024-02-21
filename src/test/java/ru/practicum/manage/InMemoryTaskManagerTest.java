@@ -20,7 +20,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void equalsClassTaskId() {
         Task task = new Task(1,"title", "description", NEW);
-        final int idTask = inMemoryTaskManager.addNewTask(task).getId();
+        inMemoryTaskManager.addNewTask(task);
+        final int idTask = inMemoryTaskManager.getTask(task.getId()).getId();
 
         Assertions.assertEquals(task.getId(),idTask);
     }
@@ -29,7 +30,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void equalsClassEpicId() {
         Epic epic = new Epic("title", "description", NEW);
-        final Integer idEpic = inMemoryTaskManager.addNewEpic(epic).getId();
+        inMemoryTaskManager.addNewTask(epic);
+        final Integer idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
 
         assertEquals(epic.getId(), idEpic);
     }
@@ -38,7 +40,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void addTask() {
         Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
-        final int taskId = inMemoryTaskManager.addNewTask(task).getId();
+        inMemoryTaskManager.addNewTask(task);
+        final int taskId = inMemoryTaskManager.getTask(task.getId()).getId();
 
         final Task savedTask = inMemoryTaskManager.getTask(taskId);
 
@@ -55,7 +58,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void addEpic() {
         Epic epic = new Epic("Test addNewTask", "Test addNewTask description", NEW);
-        final int epicId = inMemoryTaskManager.addNewTask(epic).getId();
+        inMemoryTaskManager.addNewEpic(epic);
+        final int epicId = inMemoryTaskManager.getEpic(epic.getId()).getId();
 
         final Task savedTask = inMemoryTaskManager.getTask(epicId);
 
@@ -72,7 +76,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void addSubtask() {
         Subtask subtask = new Subtask("Test addNewTask", "Test addNewTask description", NEW);
-        final int subtaskId = inMemoryTaskManager.addNewTask(subtask).getId();
+        inMemoryTaskManager.addNewTask(subtask);
+        final int subtaskId = inMemoryTaskManager.getTask(subtask.getId()).getId();
 
         final Task savedTask = inMemoryTaskManager.getTask(subtaskId);
 

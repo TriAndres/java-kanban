@@ -5,20 +5,27 @@ import ru.practicum.model.Task;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskMap = new HashMap<>();
     private final Map<Integer, Epic> epicMap = new HashMap<>();
     private final Map<Integer, Subtask> subtaskMap = new HashMap<>();
+
+    private List<Task> fileList = new ArrayList<>();
     private final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         historyManager = Managers.getDefaultHistory();
+    }
+
+    public List<Task> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<Task> fileList) {
+        this.fileList = fileList;
     }
 
     @Override
@@ -60,6 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpic() {
         epicMap.clear();
         subtaskMap.clear();
+
     }
 
     @Override
@@ -69,7 +77,6 @@ public class InMemoryTaskManager implements TaskManager {
             value.getSubtasks().clear();
             statusEpic(value);
         }
-
     }
 
     @Override
@@ -90,23 +97,23 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task addNewTask(Task task) {
+    public void addNewTask(Task task) {
         Integer id = taskMap.size() + 1;
         taskMap.put(id, task);
         task.setId(id);
-        return task;
+        fileList.add(task);
     }
 
     @Override
-    public Epic addNewEpic(Epic epic) {
+    public void addNewEpic(Epic epic) {
         Integer id = epicMap.size() + 1;
         epicMap.put(id, epic);
         epic.setId(id);
-        return epic;
+        fileList.add(epic);
     }
 
     @Override
-    public Subtask addNewSubtask(Subtask subtask) {
+    public void addNewSubtask(Subtask subtask) {
         Integer id = subtaskMap.size() + 1;
         subtaskMap.put(id, subtask);
         subtask.setId(id);
@@ -114,7 +121,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epicMap.get(idEpic);
         epic.add(subtask);
         statusEpic(epic);
-        return subtask;
+        fileList.add(subtask);
     }
 
     @Override

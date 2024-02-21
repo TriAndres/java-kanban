@@ -24,9 +24,9 @@ public interface TaskManager {
     Subtask getSubtask(Integer subtaskId);
 
     // d. Создание. Сам объект должен передаваться в качестве параметра.
-    Task addNewTask(Task task);
-    Epic addNewEpic(Epic epic);
-    Subtask addNewSubtask(Subtask subtask);
+    void addNewTask(Task task);
+    void addNewEpic(Epic epic);
+    void addNewSubtask(Subtask subtask);
 
     // e. Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     void updateTask(Task task);

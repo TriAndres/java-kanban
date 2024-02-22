@@ -18,9 +18,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+    public static void main(String[] args) {
+        File file = new File("src\\main\\java\\ru\\practicum\\manage\\fileBacked\\test.csv");
+        TaskManager manager = new FileBackedTaskManager(file);
+
+        manager.addNewTask(new Task("*** 1 ЗАДАЧА ***"));
+        manager.addNewEpic(new Epic("*** 1 Эпик ***"));
+        manager.addNewSubtask(new Subtask("*** 1 Подзадача ***", 1));
+
+
+
+
+    }
+
     public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,epic" + "\n");
             for (Task task : getFileList()) {
                 writer.write(Csv.toString(task));
             }

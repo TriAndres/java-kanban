@@ -15,11 +15,16 @@ public class Csv {
         if (task instanceof Epic){
             taskType = TaskType.EPIC;
             for (Subtask subtask : ((Epic) task).getSubtasks()) {
-                sb.append(subtask.getIdEpic() + "/");
+                sb.append(subtask.getIdEpic()).append("*");
             }
             epicId = sb.toString();
+        } else if (task instanceof Subtask) {
+            taskType = TaskType.SUBTASK;
+            epicId += ((Subtask) task).getIdEpic();
+        } else {
+            taskType = TaskType.TASK;
         }
-       return null;
+        return String.format("%d,%s,%s,%s,%s,%s%n", task.getId(),taskType,task.getTitle(),task.getStatus(),task.getDescription(),epicId);
     }
 
     Task fromString(String value) {

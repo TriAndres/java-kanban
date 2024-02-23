@@ -1,17 +1,24 @@
 package ru.practicum.manage;
 
+import ru.practicum.exseption.ManagerSaveException;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Task;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
+
+import static ru.practicum.manage.TaskType.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private final Map<Integer, Task> taskMap = new HashMap<>();
-    private final Map<Integer, Epic> epicMap = new HashMap<>();
-    private final Map<Integer, Subtask> subtaskMap = new HashMap<>();
+    protected static final Map<Integer, Task> taskMap = new HashMap<>();
+    protected static final Map<Integer, Epic> epicMap = new HashMap<>();
+    protected static final Map<Integer, Subtask> subtaskMap = new HashMap<>();
 
     private List<Task> fileList = new ArrayList<>();
     private final HistoryManager historyManager;
@@ -27,6 +34,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void setFileList(List<Task> fileList) {
         this.fileList = fileList;
     }
+
 
     @Override
     public ArrayList<Task> getTasks() {

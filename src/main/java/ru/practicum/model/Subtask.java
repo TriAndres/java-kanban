@@ -20,6 +20,11 @@ public class Subtask extends Task {
         this.id = getId();
     }
 
+    public Subtask(Integer id, String title, String description, Status status, Integer idEpic) {
+        super(id, title, description, status);
+        this.idEpic = idEpic;
+    }
+
     public Integer getIdEpic() {
         return idEpic;
     }

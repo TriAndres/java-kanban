@@ -1,7 +1,7 @@
 package ru.practicum.manage;
 
-import org.junit.jupiter.api.Assertions;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
@@ -31,7 +31,8 @@ public class InMemoryTaskManagerTest {
     public void equalsClassEpicId() {
         Epic epic = new Epic("title", "description", NEW);
         inMemoryTaskManager.addNewTask(epic);
-        final Integer idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
+        int idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
+        System.out.println(idEpic);
 
         assertEquals(epic.getId(), idEpic);
     }
@@ -91,7 +92,6 @@ public class InMemoryTaskManagerTest {
         assertEquals(subtask, tasks.get(0));//"Задачи не совпадают."
     }
 
-
     @Test
     public void add() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
@@ -104,6 +104,4 @@ public class InMemoryTaskManagerTest {
         assertNotNull(history); //"История не пустая."
         assertEquals(1, history.size());//"История не пустая."
     }
-
-
 }

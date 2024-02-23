@@ -4,6 +4,7 @@ import ru.practicum.model.Epic;
 import ru.practicum.model.Task;
 import ru.practicum.model.Subtask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +38,4 @@ public interface TaskManager {
     void deleteIdTask(Integer id);
     void deleteIdEpic(Integer id);
     void deleteIdSubtask(Integer id);
-
 }

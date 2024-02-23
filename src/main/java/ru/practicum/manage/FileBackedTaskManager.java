@@ -92,40 +92,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void deleteTask() {
         super.deleteTask();
-        //save();
     }
 
     @Override
     public void deleteEpic() {
         super.deleteEpic();
-        //save();
     }
 
     @Override
     public void deleteSubtask() {
         super.deleteSubtask();
-        //save();
     }
 
     @Override
     public Task getTask(Integer taskId) {
-        Task task = super.getTask(taskId);
-        //save();
-        return task;
+        return super.getTask(taskId);
     }
 
     @Override
     public Epic getEpic(Integer epicId) {
-        Epic epic = super.getEpic(epicId);
-        //save();
-        return epic;
+        return super.getEpic(epicId);
     }
 
     @Override
     public Subtask getSubtask(Integer subtaskId) {
-        Subtask subtask = super.getSubtask(subtaskId);
-        //save();
-        return subtask;
+        return super.getSubtask(subtaskId);
     }
 
     @Override
@@ -149,37 +140,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void updateTask(Task task) {
         super.updateTask(task);
-        save();
     }
 
     @Override
     public void updateEpic(Epic epic) {
         super.updateEpic(epic);
-        save();
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
         super.updateSubtask(subtask);
-        save();
     }
 
     @Override
     public void deleteIdTask(Integer id) {
         super.deleteIdTask(id);
-        //save();
     }
 
     @Override
     public void deleteIdEpic(Integer id) {
         super.deleteIdEpic(id);
-        //save();
     }
 
     @Override
     public void deleteIdSubtask(Integer id) {
         super.deleteIdSubtask(id);
-        //save();
     }
 
 

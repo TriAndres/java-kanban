@@ -14,11 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.practicum.model.Status.NEW;
 
 public class InMemoryTaskManagerTest {
-    InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+
 
     //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
     public void equalsClassTaskId() {
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task(1,"title", "description", NEW);
         inMemoryTaskManager.addNewTask(task);
         final int idTask = inMemoryTaskManager.getTask(task.getId()).getId();
@@ -29,7 +30,9 @@ public class InMemoryTaskManagerTest {
     //*проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
     public void equalsClassEpicId() {
-        Epic epic = new Epic("title", "description", NEW);
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        //Epic epic = new Epic("title", "description", NEW);
+        Epic epic = new Epic("Эпик 1");
         inMemoryTaskManager.addNewTask(epic);
         int idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
         System.out.println(idEpic);
@@ -40,6 +43,7 @@ public class InMemoryTaskManagerTest {
     /////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void addTask() {
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
         inMemoryTaskManager.addNewTask(task);
         final int taskId = inMemoryTaskManager.getTask(task.getId()).getId();
@@ -58,6 +62,7 @@ public class InMemoryTaskManagerTest {
 
     @Test
     public void addEpic() {
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Epic epic = new Epic("Test addNewTask", "Test addNewTask description", NEW);
         inMemoryTaskManager.addNewEpic(epic);
         final int epicId = inMemoryTaskManager.getEpic(epic.getId()).getId();
@@ -76,6 +81,7 @@ public class InMemoryTaskManagerTest {
 
     @Test
     public void addSubtask() {
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Subtask subtask = new Subtask("Test addNewTask", "Test addNewTask description", NEW);
         inMemoryTaskManager.addNewTask(subtask);
         final int subtaskId = inMemoryTaskManager.getTask(subtask.getId()).getId();

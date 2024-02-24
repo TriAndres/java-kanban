@@ -36,7 +36,7 @@ public class Epic extends Task {
         this.subtasks = subtasks;
     }
 
-    public void add(Subtask subtask) {
+    public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
     }
 

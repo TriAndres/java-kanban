@@ -20,7 +20,7 @@ public interface TaskManager {
     void deleteSubtask();
 
     // c. Получение по идентификатору.
-    Task getTask(Integer tascId);
+    Task getTask(Integer taskId);
     Epic getEpic(Integer epicId);
     Subtask getSubtask(Integer subtaskId);
 

@@ -7,12 +7,14 @@ public class Epic extends Task {
 
     public Epic(String description) {
         super(description);
+        this.id = getId();
         subtasks = new ArrayList<>();
         setTitle("Эпик");
     }
 
     public Epic(Integer id, String description) {
         super(id, description);
+        this.id = getId();
         subtasks = new ArrayList<>();
         setTitle("Эпик");
     }

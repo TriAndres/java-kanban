@@ -1,18 +1,14 @@
 package ru.practicum.manage;
 
-import ru.practicum.exseption.ManagerSaveException;
 import ru.practicum.model.Epic;
-import ru.practicum.model.Task;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
+import ru.practicum.model.Task;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-
-import static ru.practicum.manage.TaskType.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager {

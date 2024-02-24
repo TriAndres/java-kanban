@@ -15,9 +15,10 @@ public class Subtask extends Task {
         setTitle("Подзадача");
     }
 
-    public Subtask(String title, String description, Status status) {
+    public Subtask(String title, String description, Status status, Integer idEpic) {
         super(title,description,status);
         this.id = getId();
+        this.idEpic = idEpic;
     }
 
     public Subtask(Integer id, String title, String description, Status status, Integer idEpic) {
@@ -31,5 +32,10 @@ public class Subtask extends Task {
 
     public void setIdEpic(Integer idEpic) {
         this.idEpic = idEpic;
+    }
+
+    @Override
+    public String toString() {
+        return title + ":" + description + ", status: " + status + ", epic: " + idEpic;
     }
 }

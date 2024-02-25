@@ -14,6 +14,7 @@ import static ru.practicum.model.TaskType.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
+    public final String FIRST_LINE = "type,id,name,description,status,epicId\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -33,6 +34,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     5 - удаление task
                     6 - удаление epic
                     7 - удаление subtask
+                    8 - посмотреть историю
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
@@ -80,13 +82,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 case "7":
                     manager.deleteSubtask(); //ошибка
                     break;
+                case "8":
+                    historyManager.getHistory();
+                    for (Task task1 : historyManager.getHistory()) {
+                        System.out.println(task1);
+                    }
+                    break;
             }
         }
     }
 
     public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("type,id,name,description,status,epicId\n");
+            writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
                     writer.write(Csv.toString(task));
@@ -102,7 +110,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(Csv.toString(subtask));
                 }
             }
-            writer.write("type,id,name,description,status,epicId\n");
+            writer.write(FIRST_LINE);
             for (Task task : historyManager.getHistory()) {
                 writer.write(Csv.historyToString(task));
             }

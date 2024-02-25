@@ -1,11 +1,10 @@
-package ru.practicum.manage;
+package ru.practicum.manage.inMemoryTask;
 
 import ru.practicum.model.Epic;
-import ru.practicum.model.Task;
 import ru.practicum.model.Subtask;
+import ru.practicum.model.Task;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface TaskManager {
     // a. Получение списка всех задач.
@@ -19,14 +18,14 @@ public interface TaskManager {
     void deleteSubtask();
 
     // c. Получение по идентификатору.
-    Task getTask(Integer tascId);
+    Task getTask(Integer taskId);
     Epic getEpic(Integer epicId);
     Subtask getSubtask(Integer subtaskId);
 
     // d. Создание. Сам объект должен передаваться в качестве параметра.
-    Task addNewTask(Task task);
-    Epic addNewEpic(Epic epic);
-    Subtask addNewSubtask(Subtask subtask);
+    void addNewTask(Task task);
+    void addNewEpic(Epic epic);
+    void addNewSubtask(Subtask subtask);
 
     // e. Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     void updateTask(Task task);
@@ -37,5 +36,4 @@ public interface TaskManager {
     void deleteIdTask(Integer id);
     void deleteIdEpic(Integer id);
     void deleteIdSubtask(Integer id);
-
 }

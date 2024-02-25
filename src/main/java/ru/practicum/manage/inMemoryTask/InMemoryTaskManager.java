@@ -17,11 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected static final Map<Integer, Task> taskMap = new HashMap<>();
     protected static final Map<Integer, Epic> epicMap = new HashMap<>();
     protected static final Map<Integer, Subtask> subtaskMap = new HashMap<>();
-    protected final HistoryManager historyManager;
-
-    public InMemoryTaskManager() {
-        historyManager = Managers.getDefaultHistory();
-    }
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public ArrayList<Task> getTasks() {
@@ -83,10 +79,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         if (!epicMap.isEmpty()) {
             for (Epic value : epicMap.values()) {
-                //if (!value.getSubtasks().isEmpty()) {
+                if (!value.getSubtasks().isEmpty()) {
                     value.getSubtasks().clear();
                     statusEpic(value);
-               // }
+                }
             }
         }
     }
@@ -128,6 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (!taskMap.containsKey(id)) {
                 taskMap.put(id, task);
                 task.setId(id);
+                add(taskMap.get(id));
             }
         }
     }
@@ -139,6 +136,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (!epicMap.containsKey(id)) {
                 epicMap.put(id, epic);
                 epic.setId(id);
+                add(epicMap.get(id));
             }
         }
     }
@@ -156,6 +154,7 @@ public class InMemoryTaskManager implements TaskManager {
                     epic.addSubtask(subtask);
                     statusEpic(epic);
                 }
+                add(subtaskMap.get(id));
             }
         }
     }

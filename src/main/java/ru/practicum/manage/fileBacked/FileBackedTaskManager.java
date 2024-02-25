@@ -1,6 +1,7 @@
 package ru.practicum.manage.fileBacked;
 
 import ru.practicum.exseption.ManagerSaveException;
+import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
 import ru.practicum.manage.inMemoryTask.TaskManager;
 import ru.practicum.model.*;
@@ -101,7 +102,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(Csv.toString(subtask));
                 }
             }
-            //writer.write("\n" + Csv.historyToString(historyManager));
+            /*
+            //ЗАПИСАТЬ МОГУ, ЧИТАТЬ НЕ ПОЛУЧАЕТСЯ
+            writer.write("history\n");
+            writer.write("type,id,name,description,status,epicId\n");
+            for (Task task : historyManager.getHistory()) {
+                writer.write(Csv.historyToString(task));
+            }
+
+             */
+
+
         } catch (IOException e) {
             throw new ManagerSaveException();
         }
@@ -235,6 +246,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     default -> status;
                 };
                 if (!line[0].equals("type")) {
+
                     if (line[0].equals("TASK")) {
                         taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
@@ -253,38 +265,3 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBackedTaskManager;
     }
 }
-
-
-
-
-
-
-/*
-public static FileBackedTaskManager loadFromFile(File file) {
-    FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
-    ArrayList<String> arrayList = new ArrayList<>();
-    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-        while (reader.ready()) {
-            arrayList.add(reader.readLine());
-        }
-        for (String string : arrayList) {
-            String[] line = string.split(",");
-            if (!line[0].equals("type")) {
-                if (line[0].equals("TASK")) {
-                    taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
-                }
-                if (line[0].equals("EPIC")) {
-                    epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
-                }
-                if (line[0].equals("SUBTASK")) {
-                    subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]), Integer.parseInt(line[5])));
-                }
-            }
-        }
-
-    } catch (IOException e) {
-        throw new ManagerSaveException();
-    }
-    return fileBackedTaskManager;
-}
-*/

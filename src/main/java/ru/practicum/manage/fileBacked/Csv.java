@@ -4,6 +4,7 @@ import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.practicum.model.TaskType.*;
@@ -26,18 +27,10 @@ public class Csv {
         return null;
     }
 
-    static String historyToString(HistoryManager manager) {
-        return null;
+    public static String historyToString(Task task) {
+        return String.format("%d,%s,%s,%s%n", task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
     }
 
-// public static String historyToString(HistoryManager manager) {
-//        String[] historyIds = new String[manager.getHistory().size()];
-//        for (int i = 0; i < manager.getHistory().size(); i++) {
-//            Integer id = manager.getHistory().get(i).getId();
-//            historyIds[i] = id.toString();
-//        }
-//        return String.join(",", historyIds);
-//    }
     static List<Integer> historyFromString(String value) {
         return null;
     }

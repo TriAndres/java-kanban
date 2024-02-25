@@ -9,17 +9,17 @@ import java.util.List;
 import static ru.practicum.model.TaskType.*;
 
 public class Csv {
-
     public static String toString(Task task) {
-        Integer epicId = 0;
-        TaskType taskType = TASK;
+        String string;
         if (task instanceof Epic) {
-            taskType = EPIC;
+            string = String.format("%s,%d,%s,%s,%s%n", EPIC,task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
         } else if (task instanceof Subtask) {
-            epicId = ((Subtask) task).getIdEpic();
-            taskType = SUBTASK;
+            Integer epicId = ((Subtask) task).getIdEpic();
+            string = String.format("%s,%d,%s,%s,%s,%d%n", SUBTASK,task.getId(),task.getTitle(),task.getDescription(),task.getStatus(),epicId);
+        } else {
+            string = String.format("%s,%d,%s,%s,%s%n", TASK,task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
         }
-        return String.format("%s,%d,%s,%s,%s,%d%n", taskType,task.getId(),task.getTitle(),task.getDescription(),task.getStatus(),epicId);
+        return string;
     }
 
     public Task fromString(String value) {
@@ -30,6 +30,14 @@ public class Csv {
         return null;
     }
 
+// public static String historyToString(HistoryManager manager) {
+//        String[] historyIds = new String[manager.getHistory().size()];
+//        for (int i = 0; i < manager.getHistory().size(); i++) {
+//            Integer id = manager.getHistory().get(i).getId();
+//            historyIds[i] = id.toString();
+//        }
+//        return String.join(",", historyIds);
+//    }
     static List<Integer> historyFromString(String value) {
         return null;
     }

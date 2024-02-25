@@ -17,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected static final Map<Integer, Task> taskMap = new HashMap<>();
     protected static final Map<Integer, Epic> epicMap = new HashMap<>();
     protected static final Map<Integer, Subtask> subtaskMap = new HashMap<>();
-    private final HistoryManager historyManager;
+    protected final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         historyManager = Managers.getDefaultHistory();
@@ -83,10 +83,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         if (!epicMap.isEmpty()) {
             for (Epic value : epicMap.values()) {
-                if (!value.getSubtasks().isEmpty()) {
+                //if (!value.getSubtasks().isEmpty()) {
                     value.getSubtasks().clear();
                     statusEpic(value);
-                }
+               // }
             }
         }
     }

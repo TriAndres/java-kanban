@@ -29,7 +29,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     2 - добавить эпик
                     3 - добавить подзадачу
                     4 - вывод
-                    5 - удаление
+                    5 - удаление task
+                    6 - удаление epic
+                    7 - удаление subtask
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
@@ -69,15 +71,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
                     break;
                 case "5":
-                    manager.deleteSubtask();
+                    manager.deleteTask();
+                    break;
+                case "6":
+                    manager.deleteEpic();
+                    break;
+                case "7":
+                    manager.deleteSubtask(); //ошибка
+                    break;
             }
         }
-
     }
 
     public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("type,id,name,description,status,epic\n");
+            writer.write("type,id,name,description,status,epicId\n");
             for (Task task : taskMap.values()) {
                 if (task != null) {
                     writer.write(Csv.toString(task));
@@ -93,6 +101,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(Csv.toString(subtask));
                 }
             }
+            //writer.write("\n" + Csv.historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException();
         }
@@ -100,20 +109,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public ArrayList<Task> getTasks() {
+        ArrayList<Task> list = super.getTasks();
         save();
-        return super.getTasks();
+        return list;
     }
 
     @Override
     public ArrayList<Epic> getEpics() {
+        ArrayList<Epic> list = super.getEpics();
         save();
-        return super.getEpics();
+        return list;
     }
 
     @Override
     public ArrayList<Subtask> getSubtasks() {
+        ArrayList<Subtask> list = super.getSubtasks();
         save();
-        return super.getSubtasks();
+        return list;
     }
 
     @Override
@@ -136,20 +148,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Task getTask(Integer taskId) {
+        Task task = super.getTask(taskId);
         save();
-        return super.getTask(taskId);
+        return task;
     }
 
     @Override
     public Epic getEpic(Integer epicId) {
+        Epic epic = super.getEpic(epicId);
         save();
-        return super.getEpic(epicId);
+        return epic;
     }
 
     @Override
     public Subtask getSubtask(Integer subtaskId) {
+        Subtask subtask = super.getSubtask(subtaskId);
         save();
-        return super.getSubtask(subtaskId);
+        return subtask;
     }
 
     @Override
@@ -208,29 +223,68 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
     public static FileBackedTaskManager loadFromFile(File file) {
+        Status status = null;
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
-        ArrayList<String> arrayList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.ready()) {
-                arrayList.add(reader.readLine());
-            }
-            for (String string : arrayList) {
-                String[] line = string.split(",");
+                String[] line = reader.readLine().split(",");
+                status = switch (line[4]) {
+                    case "NEW" -> Status.NEW;
+                    case "IN_PROGRESS" -> Status.IN_PROGRESS;
+                    case "DONE" -> Status.DONE;
+                    default -> status;
+                };
                 if (!line[0].equals("type")) {
-                    if (TaskType.valueOf(line[0]).equals(TASK)) {
-                        taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
+                    if (line[0].equals("TASK")) {
+                        taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
-                    if (TaskType.valueOf(line[0]).equals(EPIC)) {
-                        epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
+                    if (line[0].equals("EPIC")) {
+                        epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
-                    if (TaskType.valueOf(line[0]).equals(SUBTASK)) {
-                        subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]), Integer.parseInt(line[5])));
+                    if (line[0].equals("SUBTASK")) {
+                        subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
                     }
                 }
             }
+
         } catch (IOException e) {
             throw new ManagerSaveException();
         }
         return fileBackedTaskManager;
     }
 }
+
+
+
+
+
+
+/*
+public static FileBackedTaskManager loadFromFile(File file) {
+    FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
+    ArrayList<String> arrayList = new ArrayList<>();
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        while (reader.ready()) {
+            arrayList.add(reader.readLine());
+        }
+        for (String string : arrayList) {
+            String[] line = string.split(",");
+            if (!line[0].equals("type")) {
+                if (line[0].equals("TASK")) {
+                    taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
+                }
+                if (line[0].equals("EPIC")) {
+                    epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4])));
+                }
+                if (line[0].equals("SUBTASK")) {
+                    subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]), Integer.parseInt(line[5])));
+                }
+            }
+        }
+
+    } catch (IOException e) {
+        throw new ManagerSaveException();
+    }
+    return fileBackedTaskManager;
+}
+*/

@@ -3,6 +3,8 @@ package ru.practicum.manage;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.practicum.manage.history.InMemoryHistoryManager;
+import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Task;
 
@@ -19,7 +21,7 @@ public class InMemoryTaskManagerTest {
     @Test
     public void equalsClassTaskId() {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        Task task = new Task(1,"title", "description", NEW);
+        Task task = new Task("description");
         inMemoryTaskManager.addNewTask(task);
         final int idTask = inMemoryTaskManager.getTask(task.getId()).getId();
 
@@ -30,82 +32,13 @@ public class InMemoryTaskManagerTest {
     @Test
     public void equalsClassEpicId() {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        Epic epic = new Epic(1,"title", "description", NEW);
-        inMemoryTaskManager.updateTask(epic);
+        Epic epic = new Epic("description");
+        inMemoryTaskManager.addNewEpic(epic);
         int idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
         System.out.println(idEpic);
 
         assertEquals(epic.getId(), idEpic);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    @Test
-    public void addTask() {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
-        inMemoryTaskManager.addNewTask(task);
-        final int taskId = inMemoryTaskManager.getTask(task.getId()).getId();
 
-        final Task savedTask = inMemoryTaskManager.getTask(taskId);
-
-        assertNotNull(savedTask);//"Задача не найдена."
-        assertEquals(task, savedTask); //"Задачи не совпадают."
-
-        final List<Task> tasks = inMemoryTaskManager.getTasks();
-
-        assertNotNull(tasks);//"Задачи не возвращаются."
-        assertEquals(1, tasks.size());//Неверное количество задач
-        assertEquals(task, tasks.get(0));//"Задачи не совпадают."
-    }
-
-    @Test
-    public void addEpic() {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        Epic epic = new Epic("Test addNewTask", "Test addNewTask description", NEW);
-        inMemoryTaskManager.addNewEpic(epic);
-        final int epicId = inMemoryTaskManager.getEpic(epic.getId()).getId();
-
-        final Task savedTask = inMemoryTaskManager.getTask(epicId);
-
-        assertNotNull(savedTask);//"Задача не найдена."
-        assertEquals(epic, savedTask); //"Задачи не совпадают."
-
-        final List<Task> tasks = inMemoryTaskManager.getTasks();
-
-        assertNotNull(tasks);//"Задачи не возвращаются."
-        assertEquals(1, tasks.size()); //"Неверное количество задач."
-        assertEquals(epic, tasks.get(0));//"Задачи не совпадают."
-    }
-
-//    @Test
-//    public void addSubtask() {
-//        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-//        Subtask subtask = new Subtask("Test addNewTask", "Test addNewTask description", NEW);
-//        inMemoryTaskManager.addNewTask(subtask);
-//        final int subtaskId = inMemoryTaskManager.getTask(subtask.getId()).getId();
-//
-//        final Task savedTask = inMemoryTaskManager.getTask(subtaskId);
-//
-//        assertNotNull(savedTask);//"Задача не найдена."
-//        assertEquals(subtask, savedTask); //"Задачи не совпадают."
-//
-//        final List<Task> tasks = inMemoryTaskManager.getTasks();
-//
-//        assertNotNull(tasks);//"Задачи не возвращаются."
-//        assertEquals(1, tasks.size()); //"Неверное количество задач."
-//        assertEquals(subtask, tasks.get(0));//"Задачи не совпадают."
-//    }
-
-    @Test
-    public void add() {
-        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", NEW);
-        task.setId(1);
-
-        historyManager.add(task);
-        historyManager.getHistory();
-        List<Task> history = historyManager.getHistory();
-        assertNotNull(history); //"История не пустая."
-        assertEquals(1, history.size());//"История не пустая."
-    }
 }

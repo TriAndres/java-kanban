@@ -15,20 +15,6 @@ public class Task {
         setTitle("Задача");
     }
 
-    public Task(Integer id, String description) {
-        this.id = id;
-        this.description = description;
-        this.status = Status.NEW;
-        setTitle("Задача");
-    }
-
-    public Task(String title, String description, Status status) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.id = getId();
-    }
-
     public Task(Integer id, String title, String description, Status status) {
         this.id = id;
         this.title = title;
@@ -83,6 +69,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return title + ":" + description + ", status: " + status;
+        return TaskType.TASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
     }
 }

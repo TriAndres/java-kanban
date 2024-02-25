@@ -1,4 +1,4 @@
-package ru.practicum.manage;
+package ru.practicum.manage.inMemoryTask;
 
 import ru.practicum.model.Epic;
 import ru.practicum.model.Task;

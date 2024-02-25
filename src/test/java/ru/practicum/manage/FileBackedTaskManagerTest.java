@@ -4,6 +4,7 @@ package ru.practicum.manage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.practicum.manage.fileBacked.FileBackedTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Task;
 
@@ -13,17 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileBackedTaskManagerTest {
     private FileBackedTaskManager manager;
-
     @BeforeEach
     public  void  BeforeEach() {
-        File file = new File("src\\test\\java\\ru\\practicum\\manage\\fileBacked\\test2.csv");
+        File file = new File("src\\test\\java\\ru\\practicum\\manage\\file\\test2.csv");
          manager = FileBackedTaskManager.loadFromFile(file);
     }
 
     @Test
     public void equalsClassTaskId() {
-        Task task = new Task(1,"Задача 1");
-        manager.updateTask(task);
+        Task task = new Task("Задача 1");
+        manager.addNewTask(task);
         final int idTask = manager.getTask(task.getId()).getId();
         System.out.println(idTask);
 
@@ -31,8 +31,8 @@ class FileBackedTaskManagerTest {
     }
     @Test
     public void equalsClassEpicId() {
-        Epic epic = new Epic(1,"Эпик 1");
-        manager.updateEpic(epic);
+        Epic epic = new Epic("Эпик 1");
+        manager.addNewEpic(epic);
         int idEpic = manager.getEpic(epic.getId()).getId();
         System.out.println(idEpic);
 

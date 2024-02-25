@@ -1,5 +1,7 @@
-package ru.practicum.manage;
+package ru.practicum.manage.inMemoryTask;
 
+import ru.practicum.manage.Managers;
+import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;

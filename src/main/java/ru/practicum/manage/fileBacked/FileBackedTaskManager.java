@@ -1,6 +1,8 @@
-package ru.practicum.manage;
+package ru.practicum.manage.fileBacked;
 
 import ru.practicum.exseption.ManagerSaveException;
+import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
+import ru.practicum.manage.inMemoryTask.TaskManager;
 import ru.practicum.model.*;
 
 import java.io.*;
@@ -10,14 +12,14 @@ import java.util.Scanner;
 import static ru.practicum.model.TaskType.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private File file;
+    private final File file;
 
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\fileBacked\\test.csv");
+        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
         TaskManager manager = new FileBackedTaskManager(file);
 
         while (true) {
@@ -32,20 +34,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String line = new Scanner(System.in).nextLine();
             switch (line) {
                 case "1":
-                    System.out.println("Задача, описание");
+                    System.out.println("Задача,введите description");
                     Task task = new Task(new Scanner(System.in).nextLine());
                     manager.addNewTask(task);
                     System.out.println(task);
                     break;
                 case "2":
-                    System.out.println("Эпик,описание");
+                    System.out.println("Эпик, введите description");
                     Epic epic = new Epic(new Scanner(System.in).nextLine());
                     manager.addNewEpic(epic);
                     System.out.println(epic);
                     break;
                 case "3":
-                    System.out.println("Подзадача, описание");
+                    System.out.println("Подзадача,введите description");
                     String name = new Scanner(System.in).nextLine();
+                    System.out.println("Введите epicId");
                     Integer id = new Scanner(System.in).nextInt();
                     Subtask subtask = new Subtask(name, id);
                     manager.addNewSubtask(subtask);
@@ -75,14 +78,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("type,id,name,description,status,epic\n");
-            for (Task value : taskMap.values()) {
-                writer.write(String.format("%s,%d,%s,%s,%s%n", TaskType.TASK,value.getId(),value.getTitle(),value.getDescription(),value.getStatus()));
+            for (Task task : taskMap.values()) {
+                if (task != null) {
+                    writer.write(Csv.toString(task));
+                }
             }
-            for (Epic value : epicMap.values()) {
-                writer.write(String.format("%s,%d,%s,%s,%s%n", EPIC,value.getId(),value.getTitle(),value.getDescription(),value.getStatus()));
+            for (Epic epic : epicMap.values()) {
+                if (epic != null) {
+                    writer.write(Csv.toString(epic));
+                }
             }
-            for (Subtask value : subtaskMap.values()) {
-                writer.write(String.format("%s,%d,%s,%s,%s,%d%n", SUBTASK,value.getId(),value.getTitle(),value.getDescription(),value.getStatus(),value.getIdEpic()));
+            for (Subtask subtask : subtaskMap.values()) {
+                if (subtask != null) {
+                    writer.write(Csv.toString(subtask));
+                }
             }
         } catch (IOException e) {
             throw new ManagerSaveException();
@@ -225,65 +234,3 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBackedTaskManager;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-public static FileBackedTaskManager loadFromFile(File file) {
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while (reader.ready()) {
-
-                String[] line = reader.readLine().split(",");
-                if (!line[0].equals("type")) {
-
-//                    if (TaskType.valueOf(line[0]).equals(TASK)) {
-//
-//                        Task task = new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]));
-//                        if (!taskMap.containsValue(task)) {
-//                            System.out.println(task);
-//                            taskMap.put(Integer.parseInt(line[1]), task);
-//                        }
-                    // } else
-                    if (!TaskType.valueOf(line[0]).equals(EPIC)) {
-
-                        Epic epic = new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]));
-                        if (!epicMap.containsValue(epic)) {
-                            System.out.println(epic);
-                            epicMap.put(Integer.parseInt(line[1]), epic);
-                        }
-
-                    }
-//                    else if (!TaskType.valueOf(line[0]).equals(SUBTASK)) {
-//                        Subtask subtask = new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4]), Integer.parseInt(line[5]));
-//                        if (subtaskMap.containsValue(subtask)) {
-//                            subtaskMap.put(Integer.parseInt(line[1]), subtask);
-//                        }
-//                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new ManagerSaveException();
-        }
-        return fileBackedTaskManager;
-    }
- */

@@ -12,18 +12,6 @@ public class Epic extends Task {
         setTitle("Эпик");
     }
 
-    public Epic(Integer id, String description) {
-        super(id, description);
-        this.id = getId();
-        subtasks = new ArrayList<>();
-        setTitle("Эпик");
-    }
-
-    public Epic(String title, String description, Status status) {
-        super(title,description,status);
-        this.id = getId();
-    }
-
     public Epic(Integer id, String title, String description, Status status) {
         super(id, title, description, status);
     }
@@ -40,4 +28,8 @@ public class Epic extends Task {
         subtasks.add(subtask);
     }
 
+    @Override
+    public String toString() {
+        return TaskType.EPIC + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
+    }
 }

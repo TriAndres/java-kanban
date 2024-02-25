@@ -9,18 +9,6 @@ public class Subtask extends Task {
         setTitle("Подзадача");
     }
 
-    public Subtask(Integer id, String description, Integer idEpic) {
-        super(id, description);
-        this.idEpic = idEpic;
-        setTitle("Подзадача");
-    }
-
-    public Subtask(String title, String description, Status status, Integer idEpic) {
-        super(title,description,status);
-        this.id = getId();
-        this.idEpic = idEpic;
-    }
-
     public Subtask(Integer id, String title, String description, Status status, Integer idEpic) {
         super(id, title, description, status);
         this.idEpic = idEpic;
@@ -36,6 +24,6 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return title + ":" + description + ", status: " + status + ", epic: " + idEpic;
+        return TaskType.SUBTASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + ", epicId=" + idEpic + "\n";
     }
 }

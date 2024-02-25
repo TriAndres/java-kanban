@@ -102,17 +102,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(Csv.toString(subtask));
                 }
             }
-            /*
-            //ЗАПИСАТЬ МОГУ, ЧИТАТЬ НЕ ПОЛУЧАЕТСЯ
-            writer.write("history\n");
             writer.write("type,id,name,description,status,epicId\n");
             for (Task task : historyManager.getHistory()) {
                 writer.write(Csv.historyToString(task));
             }
-
-             */
-
-
         } catch (IOException e) {
             throw new ManagerSaveException();
         }
@@ -255,6 +248,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
                     if (line[0].equals("SUBTASK")) {
                         subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
+                    }
+                    if (line[0].equals("History")) {
+                        if (taskMap.containsKey(Integer.parseInt(line[1]))) {
+                            historyManager.add(taskMap.get(Integer.parseInt(line[1])));
+                        } else if (epicMap.containsKey(Integer.parseInt(line[1]))) {
+                            historyManager.add(epicMap.get(Integer.parseInt(line[1])));
+                        } else if (subtaskMap.containsKey(Integer.parseInt(line[1]))) {
+                            subtaskMap.containsKey(Integer.parseInt(line[1]));
+                        }
+
                     }
                 }
             }

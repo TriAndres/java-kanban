@@ -28,7 +28,7 @@ public class Csv {
     }
 
     public static String historyToString(Task task) {
-        return String.format("%d,%s,%s,%s%n", task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
+        return String.format("%s,%d,%s,%s,%s%n", "History",task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
     }
 
     static List<Integer> historyFromString(String value) {

@@ -61,21 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-    /*
-      @Override
-    public void addSubtask(Subtask newSubtask) {
-        validate(newSubtask);
-        int newSubtaskId = ++generatorId;
-        newSubtask.setId(newSubtaskId);
-        subtasks.put(newSubtaskId, newSubtask);
-        int epicId = newSubtask.getEpicId();
-        List<Integer> subtaskIds = epics.get(epicId).getSubtaskIds();
-        subtaskIds.add(newSubtaskId);
-        checkEpicStatus(epicId);
-        setEpicDateTime(epicId);
-        prioritizedTasks.add(newSubtask);
-    }
-     */
+   
     @Override
     public ArrayList<Task> getTasks() {
         ArrayList<Task> list = new ArrayList<>();

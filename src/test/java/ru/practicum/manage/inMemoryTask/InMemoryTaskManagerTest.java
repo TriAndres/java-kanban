@@ -16,7 +16,7 @@ class InMemoryTaskManagerTest {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("description");
         inMemoryTaskManager.addNewTask(task);
-        final int idTask = inMemoryTaskManager.getTask(task.getId()).getId();
+        final int idTask = inMemoryTaskManager.getTaskId(task.getId()).getId();
 
         assertEquals(task.getId(),idTask);
     }
@@ -27,7 +27,7 @@ class InMemoryTaskManagerTest {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Epic epic = new Epic("description");
         inMemoryTaskManager.addNewEpic(epic);
-        int idEpic = inMemoryTaskManager.getEpic(epic.getId()).getId();
+        int idEpic = inMemoryTaskManager.getEpicId(epic.getId()).getId();
         System.out.println(idEpic);
 
         assertEquals(epic.getId(), idEpic);

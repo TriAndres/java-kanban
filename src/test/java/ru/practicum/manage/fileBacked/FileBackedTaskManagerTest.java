@@ -22,7 +22,7 @@ class FileBackedTaskManagerTest {
     public void equalsClassTaskId() {
         Task task = new Task("Задача 1");
         manager.addNewTask(task);
-        final int idTask = manager.getTask(task.getId()).getId();
+        final int idTask = manager.getTaskId(task.getId()).getId();
         System.out.println(idTask);
 
         Assertions.assertEquals(task.getId(),idTask);
@@ -31,7 +31,7 @@ class FileBackedTaskManagerTest {
     public void equalsClassEpicId() {
         Epic epic = new Epic("Эпик 1");
         manager.addNewEpic(epic);
-        int idEpic = manager.getEpic(epic.getId()).getId();
+        int idEpic = manager.getEpicId(epic.getId()).getId();
         System.out.println(idEpic);
 
         assertEquals(epic.getId(), idEpic);

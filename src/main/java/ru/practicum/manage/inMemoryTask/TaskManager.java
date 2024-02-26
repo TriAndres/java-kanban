@@ -13,14 +13,14 @@ public interface TaskManager {
     ArrayList<Subtask> getSubtasks();
 
     // b. Удаление всех задач.
-    void deleteTask();
-    void deleteEpic();
-    void deleteSubtask();
+    void deleteAllTask();
+    void deleteAllEpic();
+    void deleteAllSubtask();
 
     // c. Получение по идентификатору.
-    Task getTask(Integer taskId);
-    Epic getEpic(Integer epicId);
-    Subtask getSubtask(Integer subtaskId);
+    Task getTaskId(Integer taskId);
+    Epic getEpicId(Integer epicId);
+    Subtask getSubtaskId(Integer subtaskId);
 
     // d. Создание. Сам объект должен передаваться в качестве параметра.
     void addNewTask(Task task);

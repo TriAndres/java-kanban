@@ -2,7 +2,6 @@ package ru.practicum.manage.fileBacked;
 
 import ru.practicum.exseption.ManagerSaveException;
 import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
-import ru.practicum.manage.inMemoryTask.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -21,9 +20,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
-        TaskManager manager = new FileBackedTaskManager(file);
-
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
+        loadFromFile(file);
         while (true) {
+
             System.out.println("""
                     Действие:
                     1 - добавить задачу
@@ -68,8 +68,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
 
                     for (Subtask subtask1 : loadFromFile(file).getSubtasks()) {
-                        System.out.println(subtask1.toString());
+                        System.out.println(subtask1.toString());;
                     }
+
                     break;
                 case "5":
                     manager.deleteAllTask();
@@ -81,6 +82,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     manager.deleteAllSubtask(); //ошибка, удаляет всё
                     break;
             }
+
         }
     }
 
@@ -102,7 +104,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(Csv.toString(subtask));
                 }
             }
-            writer.newLine();
             writer.write("type,id,name,description,status,epicId\n");
             for (Task task : historyManager.getHistory()) {
                 writer.write(Csv.historyToString(task));

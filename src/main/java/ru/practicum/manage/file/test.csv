@@ -1,8 +1,9 @@
 type,id,name,description,status,epicId
-TASK,1,Задача,333,NEW
-
-TASK,2,Задача,3333,NEW
-
+TASK,1,Задача,1,NEW
+TASK,2,Задача,2,NEW
+EPIC,1,Эпик,2,NEW
+SUBTASK,1,Подзадача,33,NEW,2
+SUBTASK,2,Подзадача,111,NEW,1
 type,id,name,description,status,epicId
-History,1,Задача,333,NEW
-History,2,Задача,3333,NEW
+History,1,Эпик,2,NEW
+History,2,Подзадача,111,NEW

@@ -10,6 +10,8 @@ import ru.practicum.model.Task;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -22,17 +24,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
         TaskManager manager = new FileBackedTaskManager(file);
-
         while (true) {
             System.out.println("""
                     Действие:
                     1 - добавить задачу
                     2 - добавить эпик
                     3 - добавить подзадачу
-                    4 - вывод
-                    5 - удаление task
-                    6 - удаление epic
-                    7 - удаление subtask
+                    4 - вернуть задачу
+                    5 - вернуть эпик
+                    6 - вернуть подзадачу
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
@@ -58,57 +58,60 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(subtask);
                     break;
                 case "4":
-                    System.out.println("вывод");
-                    for (Task task1 : loadFromFile(file).getTasks()) {
-                        System.out.println(task1.toString());
-                    }
-
-                    for (Epic epic1 : loadFromFile(file).getEpics()) {
-                        System.out.println(epic1.toString());
-                    }
-
-                    for (Subtask subtask1 : loadFromFile(file).getSubtasks()) {
-                        System.out.println(subtask1.toString());
+                    System.out.println("Вывод задачи по id:");
+                    Integer idTask = new Scanner(System.in).nextInt();
+                    if (taskMap.containsKey(idTask)) {
+                        System.out.println(manager.getTaskId(idTask));
+                    } else {
+                        System.out.println("по id задачи нет");
                     }
                     break;
                 case "5":
-                    manager.deleteAllTask();
+                    System.out.println("Вывод задачи по id:");
+                    Integer idEpic = new Scanner(System.in).nextInt();
+                    if (epicMap.containsKey(idEpic)) {
+                        System.out.println(manager.getEpicId(idEpic));
+                    } else {
+                        System.out.println("по id эпика нет");
+                    }
                     break;
                 case "6":
-                    manager.deleteAllEpic();
+                    System.out.println("Вывод задачи по id:");
+                    Integer idSubtask = new Scanner(System.in).nextInt();
+                    if (subtaskMap.containsKey(idSubtask)) {
+                        System.out.println(manager.getSubtaskId(idSubtask));
+                    } else {
+                        System.out.println("по id задачи нет");
+                    }
                     break;
-                case "7":
-                    manager.deleteAllSubtask(); //ошибка, удаляет всё
-                    break;
+
             }
         }
     }
 
     public void save() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
-            writer.write("type,id,name,description,status,epicId\n");
+        final String FIRST_LINE = "type,id,name,description,status,epicId\n";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
-                    writer.write(Csv.toString(task));
+                    writer.write(CSV.toString(task));
                 }
             }
             for (Epic epic : epicMap.values()) {
                 if (epic != null) {
-                    writer.write(Csv.toString(epic));
+                    writer.write(CSV.toString(epic));
                 }
             }
             for (Subtask subtask : subtaskMap.values()) {
                 if (subtask != null) {
-                    writer.write(Csv.toString(subtask));
+                    writer.write(CSV.toString(subtask));
                 }
             }
             writer.newLine();
-            writer.write("type,id,name,description,status,epicId\n");
-            for (Task task : historyManager.getHistory()) {
-                writer.write(Csv.historyToString(task));
-            }
+            writer.write(CSV.historyToString(historyManager));
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException("Ошибка при записи.");
         }
     }
 
@@ -232,15 +235,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.ready()) {
-                String[] line = reader.readLine().split(",");
-                status = switch (line[4]) {
-                    case "NEW" -> Status.NEW;
-                    case "IN_PROGRESS" -> Status.IN_PROGRESS;
-                    case "DONE" -> Status.DONE;
-                    default -> status;
-                };
-                if (!line[0].equals("type")) {
-
+                String[] line1 = reader.readLine().split(", ");
+                if (line1[0].equals("type")) {
+                    String[] line = reader.readLine().split(", ");
+                    status = switch (line[4]) {
+                        case "NEW" -> Status.NEW;
+                        case "IN_PROGRESS" -> Status.IN_PROGRESS;
+                        case "DONE" -> Status.DONE;
+                        default -> status;
+                    };
                     if (line[0].equals("TASK")) {
                         taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
@@ -250,15 +253,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     if (line[0].equals("SUBTASK")) {
                         subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
                     }
+                } else if (line1[0].equals("History")) {
+                    String[] line = reader.readLine().split(", ");
                     if (line[0].equals("History")) {
-                        if (taskMap.containsKey(Integer.parseInt(line[1]))) {
-                            historyManager.add(taskMap.get(Integer.parseInt(line[1])));
-                        } else if (epicMap.containsKey(Integer.parseInt(line[1]))) {
-                            historyManager.add(epicMap.get(Integer.parseInt(line[1])));
-                        } else if (subtaskMap.containsKey(Integer.parseInt(line[1]))) {
-                            subtaskMap.containsKey(Integer.parseInt(line[1]));
+                        for (int i = 0; i < line.length; i++) {
+                            if (line[i].equals("History")) continue;
+                            if (taskMap.containsKey(Integer.parseInt(line[i]))) {
+                                historyManager.add(taskMap.get(Integer.parseInt(line[i])));
+                            } else if (epicMap.containsKey(Integer.parseInt(line[i]))) {
+                                historyManager.add(epicMap.get(Integer.parseInt(line[i])));
+                            } else if (subtaskMap.containsKey(Integer.parseInt(line[i]))) {
+                                historyManager.add(subtaskMap.get(Integer.parseInt(line[i])));
+                            }
                         }
-
                     }
                 }
             }

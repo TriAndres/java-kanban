@@ -1,5 +1,6 @@
 package ru.practicum.manage.fileBacked;
 
+import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
@@ -8,7 +9,7 @@ import java.util.List;
 
 import static ru.practicum.model.TaskType.*;
 
-public class Csv {
+public class CSV {
     public static String toString(Task task) {
         String string;
         if (task instanceof Epic) {
@@ -26,8 +27,12 @@ public class Csv {
         return null;
     }
 
-    public static String historyToString(Task task) {
-        return String.format("%s,%d,%s,%s,%s%n", "History",task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
+    public static String historyToString(HistoryManager manager) {
+        String line = "";
+        for (Task task : manager.getHistory()) {
+            line += task.getId() + " ";
+        }
+        return String.join("","History ",line);
     }
 
     static List<Integer> historyFromString(String value) {

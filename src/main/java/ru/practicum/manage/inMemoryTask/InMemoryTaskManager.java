@@ -87,9 +87,9 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epicMap.isEmpty()) {
             for (Epic value : epicMap.values()) {
                 if (!value.getSubtasks().isEmpty()) {
-                value.getSubtasks().clear();
-                statusEpic(value);
-                 }
+                    value.getSubtasks().clear();
+                    statusEpic(value);
+                }
             }
             subtaskMap.clear();
         }

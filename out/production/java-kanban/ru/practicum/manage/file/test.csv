@@ -1,10 +1,15 @@
 type,id,name,description,status,epicId
 <<<<<<< HEAD
-TASK,1,Задача,uruuuru,NEW
+TASK,1,Задача,аааааааааа,NEW
 
 History 1 
 =======
+TASK,1,Задача,1,NEW
+TASK,2,Задача,2,NEW
+EPIC,1,Эпик,2,NEW
 SUBTASK,1,Подзадача,33,NEW,2
+SUBTASK,2,Подзадача,111,NEW,1
 type,id,name,description,status,epicId
-History,1,Подзадача,33,NEW
+History,1,Эпик,2,NEW
+History,2,Подзадача,111,NEW
 >>>>>>> 2515add2cc8ba1741153b33eed7444415b47623c

@@ -1,4 +1,10 @@
 type,id,name,description,status,epicId
+<<<<<<< HEAD
 TASK,1,Задача,uruuuru,NEW
 
 History 1 
+=======
+SUBTASK,1,Подзадача,33,NEW,2
+type,id,name,description,status,epicId
+History,1,Подзадача,33,NEW
+>>>>>>> 2515add2cc8ba1741153b33eed7444415b47623c

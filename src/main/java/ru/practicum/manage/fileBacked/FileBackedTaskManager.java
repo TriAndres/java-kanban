@@ -2,7 +2,6 @@ package ru.practicum.manage.fileBacked;
 
 import ru.practicum.exseption.ManagerSaveException;
 import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
-import ru.practicum.manage.inMemoryTask.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -23,8 +22,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
+<<<<<<< HEAD
         TaskManager manager = new FileBackedTaskManager(file);
+=======
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
+        loadFromFile(file);
+>>>>>>> 2515add2cc8ba1741153b33eed7444415b47623c
         while (true) {
+
             System.out.println("""
                     Действие:
                     1 - добавить задачу
@@ -58,13 +63,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(subtask);
                     break;
                 case "4":
+<<<<<<< HEAD
                     System.out.println("Вывод задачи по id:");
                     Integer idTask = new Scanner(System.in).nextInt();
                     if (taskMap.containsKey(idTask)) {
                         System.out.println(manager.getTaskId(idTask));
                     } else {
                         System.out.println("по id задачи нет");
+=======
+                    System.out.println("вывод");
+                    for (Task task1 : loadFromFile(file).getTasks()) {
+                        System.out.println(task1.toString());
                     }
+
+                    for (Epic epic1 : loadFromFile(file).getEpics()) {
+                        System.out.println(epic1.toString());
+                    }
+
+                    for (Subtask subtask1 : loadFromFile(file).getSubtasks()) {
+                        System.out.println(subtask1.toString());;
+>>>>>>> 2515add2cc8ba1741153b33eed7444415b47623c
+                    }
+
                     break;
                 case "5":
                     System.out.println("Вывод задачи по id:");
@@ -86,6 +106,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     break;
 
             }
+
         }
     }
 
@@ -108,8 +129,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(CSV.toString(subtask));
                 }
             }
+<<<<<<< HEAD
             writer.newLine();
             writer.write(CSV.historyToString(historyManager));
+=======
+            writer.write("type,id,name,description,status,epicId\n");
+            for (Task task : historyManager.getHistory()) {
+                writer.write(Csv.historyToString(task));
+            }
+>>>>>>> 2515add2cc8ba1741153b33eed7444415b47623c
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при записи.");
         }

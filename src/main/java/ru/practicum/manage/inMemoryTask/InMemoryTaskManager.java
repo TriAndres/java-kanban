@@ -14,15 +14,17 @@ import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    protected  static final Map<Integer, Task> taskMap = new HashMap<>();
-    protected static final Map<Integer, Epic> epicMap = new HashMap<>();
-    protected static final Map<Integer, Subtask> subtaskMap = new HashMap<>();
-    protected static final HistoryManager historyManager = Managers.getDefaultHistory();
+
+    protected   final Map<Integer, Task> taskMap = new HashMap<>();
+    protected  final Map<Integer, Epic> epicMap = new HashMap<>();
+    protected  final Map<Integer, Subtask> subtaskMap = new HashMap<>();
+    protected  final HistoryManager historyManager = Managers.getDefaultHistory();
+    private Integer id ;
 
     @Override
     public void addNewTask(Task task) {
         if (task != null) {
-            Integer id = taskMap.size() + 1;
+             id = taskMap.size() + 1;
             if (!taskMap.containsKey(id)) {
                 taskMap.put(id, task);
                 task.setId(id);
@@ -33,7 +35,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addNewEpic(Epic epic) {
         if (epic != null) {
-            Integer id = epicMap.size() + 1;
             if (!epicMap.containsKey(id)) {
                 epicMap.put(id, epic);
                 epic.setId(id);

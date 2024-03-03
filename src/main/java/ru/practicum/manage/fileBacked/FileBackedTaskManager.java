@@ -2,7 +2,6 @@ package ru.practicum.manage.fileBacked;
 
 import ru.practicum.exseption.ManagerSaveException;
 import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
-import ru.practicum.manage.inMemoryTask.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -10,8 +9,6 @@ import ru.practicum.model.Task;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -23,7 +20,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
-        TaskManager manager = new FileBackedTaskManager(file);
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
         while (true) {
             System.out.println("""
                     Действие:
@@ -60,7 +57,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 case "4":
                     System.out.println("Вывод задачи по id:");
                     Integer idTask = new Scanner(System.in).nextInt();
-                    if (taskMap.containsKey(idTask)) {
+                    if (manager.taskMap.containsKey(idTask)) {
                         System.out.println(manager.getTaskId(idTask));
                     } else {
                         System.out.println("по id задачи нет");
@@ -69,7 +66,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 case "5":
                     System.out.println("Вывод задачи по id:");
                     Integer idEpic = new Scanner(System.in).nextInt();
-                    if (epicMap.containsKey(idEpic)) {
+                    if (manager.epicMap.containsKey(idEpic)) {
                         System.out.println(manager.getEpicId(idEpic));
                     } else {
                         System.out.println("по id эпика нет");
@@ -78,7 +75,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 case "6":
                     System.out.println("Вывод задачи по id:");
                     Integer idSubtask = new Scanner(System.in).nextInt();
-                    if (subtaskMap.containsKey(idSubtask)) {
+                    if (manager.subtaskMap.containsKey(idSubtask)) {
                         System.out.println(manager.getSubtaskId(idSubtask));
                     } else {
                         System.out.println("по id задачи нет");
@@ -245,25 +242,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         default -> status;
                     };
                     if (line[0].equals("TASK")) {
-                        taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], status));
+                        fileBackedTaskManager.taskMap.put(Integer.parseInt(line[1]), new Task(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
                     if (line[0].equals("EPIC")) {
-                        epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], status));
+                        fileBackedTaskManager.epicMap.put(Integer.parseInt(line[1]), new Epic(Integer.parseInt(line[1]), line[2], line[3], status));
                     }
                     if (line[0].equals("SUBTASK")) {
-                        subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
+                        fileBackedTaskManager.subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
                     }
                 } else if (line1[0].equals("History")) {
                     String[] line = reader.readLine().split(", ");
                     if (line[0].equals("History")) {
                         for (int i = 0; i < line.length; i++) {
                             if (line[i].equals("History")) continue;
-                            if (taskMap.containsKey(Integer.parseInt(line[i]))) {
-                                historyManager.add(taskMap.get(Integer.parseInt(line[i])));
-                            } else if (epicMap.containsKey(Integer.parseInt(line[i]))) {
-                                historyManager.add(epicMap.get(Integer.parseInt(line[i])));
-                            } else if (subtaskMap.containsKey(Integer.parseInt(line[i]))) {
-                                historyManager.add(subtaskMap.get(Integer.parseInt(line[i])));
+                            if (fileBackedTaskManager.taskMap.containsKey(Integer.parseInt(line[i]))) {
+                                fileBackedTaskManager.historyManager.add(fileBackedTaskManager.taskMap.get(Integer.parseInt(line[i])));
+                            } else if (fileBackedTaskManager.epicMap.containsKey(Integer.parseInt(line[i]))) {
+                                fileBackedTaskManager.historyManager.add(fileBackedTaskManager.epicMap.get(Integer.parseInt(line[i])));
+                            } else if (fileBackedTaskManager.subtaskMap.containsKey(Integer.parseInt(line[i]))) {
+                                fileBackedTaskManager.historyManager.add(fileBackedTaskManager.subtaskMap.get(Integer.parseInt(line[i])));
                             }
                         }
                     }
@@ -271,7 +268,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException("Ошибка при Чтении.");
         }
         return fileBackedTaskManager;
     }

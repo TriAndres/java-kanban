@@ -30,7 +30,7 @@ public class CSV {
     public static String historyToString(HistoryManager manager) {
         String line = "";
         for (Task task : manager.getHistory()) {
-            line += task.getId() + " ";
+            line += task.getId() + ",";
         }
         return String.join("","History ",line);
     }

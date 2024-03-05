@@ -105,7 +105,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(CSV.toString(subtask));
                 }
             }
-            writer.newLine();
             writer.write(CSV.historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при записи.");
@@ -226,15 +225,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-
     public static FileBackedTaskManager loadFromFile(File file) {
         Status status = null;
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.ready()) {
-                String[] line1 = reader.readLine().split(", ");
-                if (line1[0].equals("type")) {
-                    String[] line = reader.readLine().split(", ");
+                String[] line1 = reader.readLine().split(",");
+                if (line1[0].equals("type") &&
+                        line1[1].equals("id") &&
+                        line1[2].equals("name") &&
+                        line1[3].equals("description") &&
+                        line1[4].equals("status") &&
+                        line1[5].equals("epicId")) {
+                    String[] line = reader.readLine().split(",");
                     status = switch (line[4]) {
                         case "NEW" -> Status.NEW;
                         case "IN_PROGRESS" -> Status.IN_PROGRESS;
@@ -251,7 +254,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         fileBackedTaskManager.subtaskMap.put(Integer.parseInt(line[1]), new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
                     }
                 } else if (line1[0].equals("History")) {
-                    String[] line = reader.readLine().split(", ");
+                    String[] line = reader.readLine().split(",");
                     if (line[0].equals("History")) {
                         for (int i = 0; i < line.length; i++) {
                             if (line[i].equals("History")) continue;

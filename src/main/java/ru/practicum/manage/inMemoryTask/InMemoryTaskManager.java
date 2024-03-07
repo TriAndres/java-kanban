@@ -52,10 +52,8 @@ public class InMemoryTaskManager implements TaskManager {
                 subtask.setId(id);
                 Integer idEpic = subtask.getIdEpic();
                 if (epicMap.containsKey(idEpic)) {
-                    Epic epic = epicMap.get(idEpic);
-                    ArrayList<Subtask> subtaskList = new ArrayList<>();
-                    subtaskList.add(subtask);
-                    epic.setSubtasks(subtaskList);
+                    Epic epic = epicMap.get(epicMap.get(idEpic).getId());
+                    epic.addSubtask(subtask);
                     statusEpic(epic);
                 }
             }
@@ -195,10 +193,8 @@ public class InMemoryTaskManager implements TaskManager {
                 add(subtask);
                 Integer idEpic = subtask.getIdEpic();
                 if (epicMap.containsKey(idEpic)) {
-                    Epic epic = epicMap.get(idEpic);
-                    ArrayList<Subtask> subtaskList = new ArrayList<>();
-                    subtaskList.add(subtask);
-                    epic.setSubtasks(subtaskList);
+                    Epic epic = epicMap.get(epicMap.get(idEpic).getId());
+                    epic.addSubtask(subtask);
                     statusEpic(epic);
                 }
             }
@@ -296,5 +292,4 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> getHistory() {
         return historyManager.getHistory();
     }
-
 }

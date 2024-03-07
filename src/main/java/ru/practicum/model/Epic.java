@@ -28,6 +28,10 @@ public class Epic extends Task {
         subtasks.add(subtask);
     }
 
+    public void getSubtaskId(int subtask) {
+        subtasks.get(subtask);
+    }
+
     @Override
     public String toString() {
         return TaskType.EPIC + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";

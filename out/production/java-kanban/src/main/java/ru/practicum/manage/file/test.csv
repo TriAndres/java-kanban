@@ -1,7 +1,0 @@
-type,id,name,description,status,epicId
-TASK,1,Задача,*** 1 ЗАДАЧА ***,NEW
-TASK,2,Задача,*** 2 ЗАДАЧА ***,NEW
-TASK,3,Задача,*** 3 ЗАДАЧА ***,NEW
-EPIC,1,Эпик,*** 1 ЭПИК ***,NEW
-EPIC,2,Эпик,*** 2 ЭПИК ***,NEW
-History 

@@ -75,8 +75,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 //Проверка корректной загрузки подзадач для эпиков
                     for (Epic epic : manager.getEpics()) {
                         System.out.println(epic.toString());
-//                        System.out.println(epic.getId());
-//                        System.out.println(epic.getSubtasks());
+
+                        System.out.println(epic.getId() + "@@@");
+
+                        for (Subtask subtask : epic.getSubtasks()) {
+                            System.out.println(subtask + "###");
+                        }
                     }
 
 

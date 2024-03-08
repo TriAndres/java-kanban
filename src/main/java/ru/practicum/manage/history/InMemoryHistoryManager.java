@@ -1,4 +1,4 @@
-package ru.practicum.manage;
+package ru.practicum.manage.history;
 
 import ru.practicum.model.Task;
 
@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final Map<Integer, Node> history = new HashMap<>();
+    private final  Map<Integer, Node> history = new HashMap<>();
     private Node head;
     private Node tail;
+
 
     @Override
     public void add(Task task) {
@@ -23,17 +24,16 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
-        return getTasks();
-    }
-
-    @Override
     public void remove(int id) {
         if (history.containsKey(id)) {
             removeNode(history.remove(id));
         }
     }
 
+    @Override
+    public List<Task> getHistory() {
+        return getTasks();
+    }
     private void linkLast(Task task) {
         if (history.isEmpty()) {
             Node firstNode = new Node(task, null, null);

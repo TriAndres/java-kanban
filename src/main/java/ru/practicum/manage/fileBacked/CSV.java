@@ -13,12 +13,12 @@ public class CSV {
     public static String toString(Task task) {
         String string;
         if (task instanceof Epic) {
-            string = String.format("%s,%d,%s,%s,%s%n", EPIC,task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
+            string = String.format("%s,%d,%s,%s,%s%n", EPIC, task.getId(), task.getTitle(), task.getDescription(), task.getStatus());
         } else if (task instanceof Subtask) {
             Integer epicId = ((Subtask) task).getIdEpic();
-            string = String.format("%s,%d,%s,%s,%s,%d%n", SUBTASK,task.getId(),task.getTitle(),task.getDescription(),task.getStatus(),epicId);
+            string = String.format("%s,%d,%s,%s,%s,%d%n", SUBTASK, task.getId(), task.getTitle(), task.getDescription(), task.getStatus(), epicId);
         } else {
-            string = String.format("%s,%d,%s,%s,%s%n", TASK,task.getId(),task.getTitle(),task.getDescription(),task.getStatus());
+            string = String.format("%s,%d,%s,%s,%s%n", TASK, task.getId(), task.getTitle(), task.getDescription(), task.getStatus());
         }
         return string;
     }
@@ -32,7 +32,7 @@ public class CSV {
         for (Task task : manager.getHistory()) {
             line += task.getId() + ",";
         }
-        return String.join("","History ",line);
+        return String.join("", "History ", line);
     }
 
     static List<Integer> historyFromString(String value) {

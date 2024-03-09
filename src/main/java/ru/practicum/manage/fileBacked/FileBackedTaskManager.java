@@ -8,19 +8,21 @@ import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
+    private static final String nameFile = "src\\main\\java\\ru\\practicum\\manage\\file\\test.csv";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
+        File file = new File(nameFile);
         FileBackedTaskManager manager = loadFromFile(file);
         while (true) {
 
@@ -34,14 +36,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String line = new Scanner(System.in).nextLine();
             switch (line) {
                 case "1":
-                    manager.addNewTask(new Task("*** 1 ЗАДАЧА ***"));                      //1
-                    manager.addNewEpic(new Epic("*** 1 ЭПИК ***"));                        //1
-                    manager.addNewTask(new Task("*** 2 ЗАДАЧА ***"));                      //2
-                    manager.addNewEpic(new Epic("*** 2 ЭПИК ***"));                        //2
-                    manager.addNewTask(new Task("*** 3 ЗАДАЧА ***"));                      //3
-                    manager.addNewSubtask(new Subtask("*** 1 ПОДЗАДАЧА ***", 2)); //1
-                    manager.addNewSubtask(new Subtask("*** 2 ПОДЗАДАЧА ***", 2));  //2
-                    manager.addNewTask(new Task("*** 4 ЗАДАЧА ***"));                      //4
+                    manager.addNewTask(new Task("*** 1 ЗАДАЧА ***"));
+                    manager.addNewEpic(new Epic("*** 1 ЭПИК ***"));
+                    manager.addNewTask(new Task("*** 2 ЗАДАЧА ***"));
+                    manager.addNewEpic(new Epic("*** 2 ЭПИК ***"));
+                    manager.addNewTask(new Task("*** 3 ЗАДАЧА ***"));
+                    manager.addNewSubtask(new Subtask("*** 1 ПОДЗАДАЧА ***", 2));
+                    manager.addNewSubtask(new Subtask("*** 2 ПОДЗАДАЧА ***", 2));
+                    manager.addNewTask(new Task("*** 4 ЗАДАЧА ***"));
                     manager.addNewTask(new Task("*** 5 ЗАДАЧА ***"));
                     manager.addNewEpic(new Epic("*** 3 ЭПИК ***"));
 
@@ -51,7 +53,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(manager.getEpicId(2));
                     System.out.println(manager.getTaskId(4));
                     System.out.println(manager.getTaskId(5));
-
 
                     for (Task task : manager.getTasks()) {
                         System.out.println(task.toString());
@@ -70,23 +71,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(manager.getTasks());
                     System.out.println(manager.getEpics());
 
-//Так же надо проверить, что история корректно загрузилась, для этого добавьте метод getHistory() в интерфейс TaskManager
-
                     for (Task task : manager.getTasks()) {
                         System.out.println(task.toString());
                     }
-//Проверка корректной загрузки подзадач для эпиков
+
                     for (Epic epic : manager.getEpics()) {
                         System.out.println(epic.toString());
 
-                        System.out.println(epic.getId() + "@@@");
+                        System.out.println(epic.getId());
 
                         for (Subtask subtask : epic.getSubtasks()) {
-                            System.out.println(subtask.getIdEpic() + "###");
+                            System.out.println(subtask.getIdEpic());
                         }
-
                     }
-
 
                     for (Subtask subtask : manager.getSubtasks()) {
                         System.out.println(subtask.toString());
@@ -114,9 +111,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public void save() {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
         final String FIRST_LINE = "type,id,name,description,status,epicId\n";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameFile,  StandardCharsets.UTF_8))) {
             writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
@@ -133,7 +129,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(CSV.toString(subtask));
                 }
             }
-
             writer.write(CSV.historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при записи.");
@@ -146,7 +141,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
         return list;
     }
-
 
     @Override
     public ArrayList<Epic> getEpics() {
@@ -259,7 +253,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Status status = null;
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         List<String> strings = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (reader.ready()) {
                 String line = reader.readLine();
                 strings.add(line);

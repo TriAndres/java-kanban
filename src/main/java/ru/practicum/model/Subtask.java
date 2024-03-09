@@ -13,10 +13,12 @@ public class Subtask extends Task {
         super(id, title, description, status);
         this.idEpic = idEpic;
     }
+
     @Override
     public Integer getIdEpic() {
         return idEpic;
     }
+
     @Override
     public void setIdEpic(Integer idEpic) {
         this.idEpic = idEpic;

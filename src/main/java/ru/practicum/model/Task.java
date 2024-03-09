@@ -2,7 +2,7 @@ package ru.practicum.model;
 
 import java.util.Objects;
 
-public class Task {
+public class Task implements Tasks{
     protected Integer id;
     protected String title;
     protected String description;
@@ -15,55 +15,41 @@ public class Task {
         setTitle("Задача");
     }
 
-    public Task(Integer id, String description) {
-        this.id = id;
-        this.description = description;
-        this.status = Status.NEW;
-        setTitle("Задача");
-    }
-
-    public Task(String title, String description, Status status) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.id = getId();
-    }
-
     public Task(Integer id, String title, String description, Status status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
     }
-
+    @Override
     public Integer getId() {
         return id;
     }
-
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @Override
     public String getTitle() {
         return title;
     }
-
+    @Override
     public void setTitle(String title) {
         this.title = title;
     }
-
+    @Override
     public String getDescription() {
         return description;
     }
-
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
-
+    @Override
     public Status getStatus() {
         return status;
     }
-
+    @Override
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -83,6 +69,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return title + ":" + description + ", status: " + status;
+        return TaskType.TASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
     }
 }

@@ -3,12 +3,11 @@ package ru.practicum.model;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks;
+    private ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public Epic(String description) {
         super(description);
         this.id = getId();
-        subtasks = new ArrayList<>();
         setTitle("Эпик");
     }
 

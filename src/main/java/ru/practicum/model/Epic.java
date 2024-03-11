@@ -3,35 +3,59 @@ package ru.practicum.model;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks;
+    private ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public Epic(String description) {
         super(description);
-        subtasks = new ArrayList<>();
-        setTitle("Эпик");
-    }
-
-    public Epic(Integer id, String description) {
-        super(id, description);
-        subtasks = new ArrayList<>();
-        setTitle("Эпик");
-    }
-
-    public Epic(String title, String description, Status status) {
-        super(title,description,status);
         this.id = getId();
+        setName("Эпик");
     }
 
+    public Epic(String name, String description, Status status) {
+        super(name, description, status);
+    }
+
+    public Epic(Integer id, String name, String description, Status status) {
+        super(id, name, description, status);
+    }
+
+    public Epic(Epic epic) {
+        super(epic);
+        this.subtasks = epic.subtasks;
+    }
+
+    @Override
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
     }
 
+    @Override
     public void setSubtasks(ArrayList<Subtask> subtasks) {
         this.subtasks = subtasks;
     }
 
-    public void add(Subtask subtask) {
+    @Override
+    public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
     }
 
+    @Override
+    public void removeSubtask(Subtask subtask) {
+        subtasks.remove(subtask);
+    }
+
+    @Override
+    public void clearSubtask() {
+        subtasks.clear();
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
+    }
+
+    @Override
+    public String toString() {
+        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
+    }
 }

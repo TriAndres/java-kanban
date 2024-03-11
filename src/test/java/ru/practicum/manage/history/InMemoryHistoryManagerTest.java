@@ -1,17 +1,19 @@
-package ru.practicum.manage;
+package ru.practicum.manage.history;
 
-import org.junit.jupiter.api.Assertions;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import ru.practicum.manage.memory.history.InMemoryHistoryManager;
 import ru.practicum.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.practicum.model.Status.NEW;
 
-public class InMemoryHistoryManagerTest {
+class InMemoryHistoryManagerTest {
     InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     @BeforeEach
@@ -25,11 +27,11 @@ public class InMemoryHistoryManagerTest {
     public void add() {
         int sizeList = inMemoryHistoryManager.getHistory().size();
 
-        Assertions.assertTrue(sizeList > 0);
+        assertTrue(sizeList > 0);
 
         inMemoryHistoryManager.add(new Task(4, "4", "Задача", NEW));
 
-        Assertions.assertTrue(sizeList < inMemoryHistoryManager.getHistory().size());
+        assertTrue(sizeList < inMemoryHistoryManager.getHistory().size());
 
     }
 
@@ -37,11 +39,11 @@ public class InMemoryHistoryManagerTest {
     public void remove() {
         int sizeList = inMemoryHistoryManager.getHistory().size();
 
-        Assertions.assertTrue(sizeList > 0);
+        assertTrue(sizeList > 0);
 
         inMemoryHistoryManager.remove(sizeList);
 
-        Assertions.assertTrue(sizeList > inMemoryHistoryManager.getHistory().size());
+        assertTrue(sizeList > inMemoryHistoryManager.getHistory().size());
     }
 
     @Test
@@ -54,7 +56,7 @@ public class InMemoryHistoryManagerTest {
                 new Task(3, "3", "Задача", NEW)
         ));
 
-        Assertions.assertIterableEquals(listOne, listTwo);
+        assertIterableEquals(listOne, listTwo);
 
         inMemoryHistoryManager.add(new Task(3, "3", "Задача Задача", NEW));
 
@@ -66,6 +68,6 @@ public class InMemoryHistoryManagerTest {
                 new Task(3, "3", "Задача Задача", NEW)
         ));
 
-        Assertions.assertIterableEquals(listThree, listFour);
+        assertIterableEquals(listThree, listFour);
     }
 }

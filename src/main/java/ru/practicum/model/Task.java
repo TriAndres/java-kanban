@@ -2,6 +2,8 @@ package ru.practicum.model;
 
 import java.util.Objects;
 
+import static ru.practicum.model.TaskType.TASK;
+
 public class Task implements Tasks {
     protected Integer id;
     protected String title;
@@ -77,6 +79,6 @@ public class Task implements Tasks {
 
     @Override
     public String toString() {
-        return TaskType.TASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
+        return TASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
     }
 }

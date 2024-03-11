@@ -15,14 +15,13 @@ import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    private static final String nameFile = "src\\main\\java\\ru\\practicum\\manage\\file\\test.csv";
-
+    
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) {
-        File file = new File(nameFile);
+        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
         FileBackedTaskManager manager = loadFromFile(file);
         while (true) {
 
@@ -112,7 +111,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         final String FIRST_LINE = "type,id,name,description,status,epicId\n";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameFile,  StandardCharsets.UTF_8))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,  StandardCharsets.UTF_8))) {
             writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {

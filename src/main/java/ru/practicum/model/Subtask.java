@@ -1,5 +1,7 @@
 package ru.practicum.model;
 
+import static ru.practicum.model.TaskType.SUBTASK;
+
 public class Subtask extends Task {
     private Integer idEpic;
 
@@ -26,6 +28,6 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return TaskType.SUBTASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + ", epicId=" + idEpic + "\n";
+        return SUBTASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + ", epicId=" + idEpic + "\n";
     }
 }

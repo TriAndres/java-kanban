@@ -2,6 +2,8 @@ package ru.practicum.model;
 
 import java.util.ArrayList;
 
+import static ru.practicum.model.TaskType.EPIC;
+
 public class Epic extends Task {
     private final ArrayList<Subtask> subtasks = new ArrayList<>();
 
@@ -32,6 +34,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return TaskType.EPIC + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
+        return EPIC + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
     }
 }

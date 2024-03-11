@@ -7,10 +7,7 @@ import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private static Integer generateId = 0;
@@ -19,8 +16,23 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Subtask> subtaskMap = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
+    private Comparator<Task> comparator = (o1, o2) -> {
+        if (o1.getStartTime().isAfter(o2.getStartTime())) {
+            return 1;
+        } else if (o1.equals(o2)) {
+            return 0;
+        }
+        return -1;
+    };
+    protected final Set<Task> anyTypeTask = new TreeSet<>(comparator);
+
+
     public static Integer generateId() {
         return ++generateId;
+    }
+
+    public List<Task> getPrioritizedTasks() {
+        return List.copyOf(anyTypeTask);
     }
 
     @Override
@@ -123,6 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (!taskMap.containsKey(id)) {
                 task.setId(id);
                 taskMap.put(id, task);
+                anyTypeTask.add(task);//////////
             }
         }
     }
@@ -134,6 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (!epicMap.containsKey(id)) {
                 epic.setId(id);
                 epicMap.put(id, epic);
+                anyTypeTask.add(epic);///
             }
         }
     }
@@ -147,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epicMap.get(idEpic);
             if (epic != null) {
                 subtaskMap.put(id, subtask);
+                anyTypeTask.add(subtask);///
                 epic.addSubtask(subtask);
                 statusEpic(epic);
             } else {
@@ -158,6 +173,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         if (task != null) {
+            Task oldTask = taskMap.get(task.getId());///
+            anyTypeTask.remove(oldTask);///
+            anyTypeTask.add(task);///
             taskMap.put(task.getId(), task);
             add(task);
         }

@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -8,6 +9,8 @@ public class Task implements Tasks {
     protected String name;
     protected String description;
     protected Status status;
+    protected long duration;
+    protected LocalDateTime startTime;
 
     public Task(String description) {
         this.description = description;
@@ -29,11 +32,30 @@ public class Task implements Tasks {
         this.status = status;
     }
 
+    public Task(String name, String description, Status status, long duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(Integer id, String name, String description, Status status, long duration, LocalDateTime startTime) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
     public Task(Task task) {
         this.id = task.id;
         this.name = task.name;
         this.description = task.description;
         this.status = task.status;
+        this.duration = task.duration;
+        this.startTime = task.startTime;
     }
 
     @Override
@@ -74,6 +96,22 @@ public class Task implements Tasks {
     @Override
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     @Override

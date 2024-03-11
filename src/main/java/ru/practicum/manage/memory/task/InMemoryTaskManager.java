@@ -1,7 +1,7 @@
-package ru.practicum.manage.inMemoryTask;
+package ru.practicum.manage.memory.task;
 
 import ru.practicum.manage.Managers;
-import ru.practicum.manage.history.HistoryManager;
+import ru.practicum.manage.memory.history.HistoryManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private static Integer genId = 0;
+    private static Integer generateId = 0;
     protected final Map<Integer, Task> taskMap = new HashMap<>();
     protected final Map<Integer, Epic> epicMap = new HashMap<>();
     protected final Map<Integer, Subtask> subtaskMap = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public static Integer getGenId() {
-        return ++genId;
+    public static Integer generateId() {
+        return ++generateId;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addNewTask(Task task) {
         if (task != null) {
-            Integer id = getGenId();
+            Integer id = generateId();
             if (!taskMap.containsKey(id)) {
                 task.setId(id);
                 taskMap.put(id, task);
@@ -130,7 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addNewEpic(Epic epic) {
         if (epic != null) {
-            Integer id = getGenId();
+            Integer id = generateId();
             if (!epicMap.containsKey(id)) {
                 epic.setId(id);
                 epicMap.put(id, epic);
@@ -141,7 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addNewSubtask(Subtask subtask) {
         if (subtask != null) {
-            Integer id = getGenId();
+            Integer id = generateId();
             subtask.setId(id);
             Integer idEpic = subtask.getIdEpic();
             Epic epic = epicMap.get(idEpic);

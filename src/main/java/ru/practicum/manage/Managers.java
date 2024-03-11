@@ -1,9 +1,9 @@
 package ru.practicum.manage;
 
-import ru.practicum.manage.history.HistoryManager;
-import ru.practicum.manage.history.InMemoryHistoryManager;
-import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
-import ru.practicum.manage.inMemoryTask.TaskManager;
+import ru.practicum.manage.memory.history.HistoryManager;
+import ru.practicum.manage.memory.history.InMemoryHistoryManager;
+import ru.practicum.manage.memory.task.InMemoryTaskManager;
+import ru.practicum.manage.memory.task.TaskManager;
 
 public class Managers {
     public static TaskManager getDefault() {

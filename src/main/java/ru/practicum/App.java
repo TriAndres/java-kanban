@@ -1,6 +1,6 @@
 package ru.practicum;
 
-import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
+import ru.practicum.manage.memory.task.InMemoryTaskManager;
 import ru.practicum.model.Task;
 
 public class App {

@@ -2,11 +2,10 @@ package ru.practicum.model;
 
 import java.util.Objects;
 
-import static ru.practicum.model.TaskType.TASK;
 
 public class Task implements Tasks {
     protected Integer id;
-    protected String title;
+    protected String name;
     protected String description;
     protected Status status;
 
@@ -14,14 +13,27 @@ public class Task implements Tasks {
         this.description = description;
         this.id = getId();
         this.status = Status.NEW;
-        setTitle("Задача");
+        setName("Задача");
     }
 
-    public Task(Integer id, String title, String description, Status status) {
-        this.id = id;
-        this.title = title;
+    public Task(String name, String description, Status status) {
+        this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(Integer id, String name, String description, Status status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(Task task) {
+        this.id = task.id;
+        this.name = task.name;
+        this.description = task.description;
+        this.status = task.status;
     }
 
     @Override
@@ -35,13 +47,13 @@ public class Task implements Tasks {
     }
 
     @Override
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     @Override
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -65,20 +77,25 @@ public class Task implements Tasks {
     }
 
     @Override
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Task task = (Task) object;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && status == task.status;
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status);
+        return Objects.hash(id, name, description, status);
     }
 
     @Override
     public String toString() {
-        return TASK + ", id=" + id + ", name=" + title + ", description=" + description + ", status=" + status + "\n";
+        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
     }
 }

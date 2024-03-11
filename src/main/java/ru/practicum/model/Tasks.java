@@ -11,11 +11,11 @@ public interface Tasks {
     default void setId(Integer id) {
     }
 
-    default String getTitle() {
+    default String getName() {
         return null;
     }
 
-    default void setTitle(String title) {
+    default void setName(String name) {
     }
 
     default String getDescription() {
@@ -32,15 +32,27 @@ public interface Tasks {
     default void setStatus(Status status) {
     }
 
+    default TaskType getType() {
+        return null;
+    }
+
+    ;
+
     //Epic
     default ArrayList<Subtask> getSubtasks() {
         return null;
+    }
+
+    default void setSubtasks(ArrayList<Subtask> subtasks) {
     }
 
     default void addSubtask(Subtask subtask) {
     }
 
     default void removeSubtask(Subtask subtask) {
+    }
+
+    default void clearSubtask() {
     }
 
     //Subtask

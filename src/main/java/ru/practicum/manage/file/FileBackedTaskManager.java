@@ -1,7 +1,7 @@
-package ru.practicum.manage.fileBacked;
+package ru.practicum.manage.file;
 
 import ru.practicum.exseption.ManagerSaveException;
-import ru.practicum.manage.inMemoryTask.InMemoryTaskManager;
+import ru.practicum.manage.memory.task.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;

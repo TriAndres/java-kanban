@@ -1,11 +1,10 @@
-package ru.practicum.manage.inMemoryTask;
+package ru.practicum.manage.memory.task;
 
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface TaskManager {
     // a. Получение списка всех задач.

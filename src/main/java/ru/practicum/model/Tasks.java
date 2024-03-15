@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public interface Tasks {
@@ -32,34 +33,44 @@ public interface Tasks {
     default void setStatus(Status status) {
     }
 
+    default LocalDateTime getStartTime() {
+        return null;
+    }
+
+    default void setStartTime(LocalDateTime startTime) {
+    }
+
+    default void setDuration(Long duration) {
+    }
+
+    default LocalDateTime getEndTime() {
+        return null;
+    }
+
+    default Long getDuration() {
+        return null;
+    }
+
     default TaskType getType() {
         return null;
     }
 
-    ;
-
     //Epic
-    default ArrayList<Subtask> getSubtasks() {
+    default ArrayList<Integer> getSubtasksId() {
         return null;
     }
 
-    default void setSubtasks(ArrayList<Subtask> subtasks) {
+    default void addSubtask(int id) {
     }
 
-    default void addSubtask(Subtask subtask) {
-    }
-
-    default void removeSubtask(Subtask subtask) {
-    }
-
-    default void clearSubtask() {
+    default void setEndTime(LocalDateTime endTime) {
     }
 
     //Subtask
-    default Integer getIdEpic() {
+    default Integer getEpicId() {
         return null;
     }
 
-    default void setIdEpic(Integer idEpic) {
+    default void setEpicId(Integer idEpic) {
     }
 }

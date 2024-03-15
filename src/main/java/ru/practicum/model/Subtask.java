@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Subtask extends Task {
@@ -21,13 +22,8 @@ public class Subtask extends Task {
         this.idEpic = idEpic;
     }
 
-    public Subtask(String name, String description, Status status, long duration, LocalDateTime startTime, Integer idEpic) {
-        super(name, description, status, duration, startTime);
-        this.idEpic = idEpic;
-    }
-
-    public Subtask(Integer id, String name, String description, Status status, long duration, LocalDateTime startTime, Integer idEpic) {
-        super(id, name, description, status, duration, startTime);
+    public Subtask(Integer id, String name, String description, Status status, Integer idEpic, LocalDateTime startTime, Long duration) {
+        super(id, name, description, status, startTime, duration);
         this.idEpic = idEpic;
     }
 
@@ -37,12 +33,12 @@ public class Subtask extends Task {
     }
 
     @Override
-    public Integer getIdEpic() {
+    public Integer getEpicId() {
         return idEpic;
     }
 
     @Override
-    public void setIdEpic(Integer idEpic) {
+    public void setEpicId(Integer idEpic) {
         this.idEpic = idEpic;
     }
 
@@ -51,6 +47,19 @@ public class Subtask extends Task {
         return TaskType.SUBTASK;
     }
 
+    //        @Override
+//    public String toString() {
+//        return getType() +
+//                "id=" + id +
+//                ", name=" + name +
+//                ", description=" + description +
+//                ", status=" + status +
+//                ", idEpic = " + idEpic +
+//                ", duration=" + duration +
+//                ", startTime=" + startTime.format(formatter) +
+//                ", endTime=" + getEndTime().format(formatter) + "\n";
+//
+//    }
     @Override
     public String toString() {
         return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + ", epicId=" + idEpic + "\n";

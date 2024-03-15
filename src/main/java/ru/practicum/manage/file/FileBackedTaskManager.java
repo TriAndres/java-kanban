@@ -79,8 +79,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
                         System.out.println(epic.getId());
 
-                        for (Subtask subtask : epic.getSubtasks()) {
-                            System.out.println(subtask.getIdEpic());
+                        for (Integer subtaskId : epic.getSubtasksId()) {
+                            System.out.print(subtaskId + " ");
                         }
                     }
 
@@ -95,8 +95,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(manager.getEpics());
 
                     for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.getId());
-                        System.out.println(epic.getSubtasks());
+                        System.out.print(epic.getId() + " ");
+                        System.out.print(epic.getSubtasksId() + " ");
                     }
                     break;
                 case "4":
@@ -249,34 +249,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
-        Status status = null;
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
-        List<String> strings = new ArrayList<>();
+        CSV csv = new CSV();
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (reader.ready()) {
                 String line = reader.readLine();
-                strings.add(line);
-            }
-            for (String string : strings) {
-                String[] line = string.split(",");
-                if (line.length >= 4) {
-                    status = switch (line[4]) {
-                        case "NEW" -> Status.NEW;
-                        case "IN_PROGRESS" -> Status.IN_PROGRESS;
-                        case "DONE" -> Status.DONE;
-                        default -> status;
-                    };
-                    if (line[0].equals("TASK")) {
-                        fileBackedTaskManager.updateTask(new Task(Integer.parseInt(line[1]), line[2], line[3], status));
-                    }
-                    if (line[0].equals("EPIC")) {
-                        fileBackedTaskManager.updateEpic(new Epic(Integer.parseInt(line[1]), line[2], line[3], status));
-                    }
-                    if (line[0].equals("SUBTASK")) {
-                        fileBackedTaskManager.updateSubtask(new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
-                    }
-                } else if (line[0].equals("type") || line[0].equals("History")) {
-                    continue;
+                Task task = csv.fromString(line);
+                if (task instanceof Epic epic) {
+                    fileBackedTaskManager.updateEpic(epic);
+                } if (task instanceof Subtask subtask) {
+                    fileBackedTaskManager.updateSubtask(subtask);
+                } else {
+                    fileBackedTaskManager.updateTask(task);
                 }
             }
         } catch (IOException e) {

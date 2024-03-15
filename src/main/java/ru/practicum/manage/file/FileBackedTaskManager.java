@@ -9,13 +9,14 @@ import ru.practicum.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    
+
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
@@ -29,89 +30,48 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     Действие:
                     1 - тест1
                     2 - тест2
-                    3 - тест3
-                    4 - тест4
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
                 case "1":
-                    manager.addNewTask(new Task("*** 1 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 1 ЭПИК ***"));
-                    manager.addNewTask(new Task("*** 2 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 2 ЭПИК ***"));
-                    manager.addNewTask(new Task("*** 3 ЗАДАЧА ***"));
-                    manager.addNewSubtask(new Subtask("*** 1 ПОДЗАДАЧА ***", 2));
-                    manager.addNewSubtask(new Subtask("*** 2 ПОДЗАДАЧА ***", 2));
-                    manager.addNewTask(new Task("*** 4 ЗАДАЧА ***"));
-                    manager.addNewTask(new Task("*** 5 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 3 ЭПИК ***"));
+                    // Спринт 8
+                    manager.addNewTask(new Task(
+                            "Task 1", "Задача 1",
+                            Status.NEW,
+                            LocalDateTime.now(),
+                            1L
+                    ));
+                    Epic epic2 = new Epic(
+                            "Epic 2", "Эпик 2",
+                            Status.NEW,
+                            LocalDateTime.now(),
+                            2L);
+                    manager.addNewEpic(epic2);
 
-                    System.out.println(manager.getTaskId(3));
-                    System.out.println(manager.getSubtaskId(1));
-                    System.out.println(manager.getSubtaskId(2));
+                    manager.addNewSubtask(new Subtask(
+                            "Subtask 3", "Субтаск 3",
+                            Status.NEW,
+                            LocalDateTime.now(),
+                            3L,
+                            epic2.getId()
+
+                    ));
+                    System.out.println(manager.getTaskId(1));
                     System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getTaskId(4));
-                    System.out.println(manager.getTaskId(5));
-
-                    for (Task task : manager.getTasks()) {
-                        System.out.println(task.toString());
-                    }
-
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.toString());
-                    }
-
-                    for (Subtask subtask : manager.getSubtasks()) {
-                        System.out.println(subtask.toString());
-                    }
+                    System.out.println(manager.getSubtaskId(3));
                     break;
                 case "2":
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
-
-                    for (Task task : manager.getTasks()) {
-                        System.out.println(task.toString());
-                    }
-
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.toString());
-
-                        System.out.println(epic.getId());
-
-                        for (Integer subtaskId : epic.getSubtasksId()) {
-                            System.out.print(subtaskId + " ");
-                        }
-                    }
-
-                    for (Subtask subtask : manager.getSubtasks()) {
-                        System.out.println(subtask.toString());
-                    }
-                    break;
-                case "3":
-
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
-
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.print(epic.getId() + " ");
-                        System.out.print(epic.getSubtasksId() + " ");
-                    }
-                    break;
-                case "4":
-
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
+                    System.out.println(manager.getTaskId(1));
+                    System.out.println(manager.getEpicId(2));
+                    System.out.println(manager.getSubtaskId(3));
                     break;
             }
         }
     }
 
     public void save() {
-        final String FIRST_LINE = "type,id,name,description,status,epicId\n";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,  StandardCharsets.UTF_8))) {
+        final String FIRST_LINE = "type,id,name,description,status,startTime,duration,epicId\n";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
@@ -257,7 +217,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Task task = csv.fromString(line);
                 if (task instanceof Epic epic) {
                     fileBackedTaskManager.updateEpic(epic);
-                } if (task instanceof Subtask subtask) {
+                }
+                if (task instanceof Subtask subtask) {
                     fileBackedTaskManager.updateSubtask(subtask);
                 } else {
                     fileBackedTaskManager.updateTask(task);

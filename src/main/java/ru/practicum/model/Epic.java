@@ -8,18 +8,8 @@ public class Epic extends Task {
     private ArrayList<Integer> subtasksId = new ArrayList<>();
     private LocalDateTime endTime;
 
-    public Epic(String description) {
-        super(description);
-        this.id = getId();
-        setName("Эпик");
-    }
-
-    public Epic(String name, String description, Status status) {
-        super(name, description, status);
-    }
-
-    public Epic(Integer id, String name, String description, Status status) {
-        super(id, name, description, status);
+    public Epic(String name, String description, Status status, LocalDateTime startTime, Long duration) {
+        super(name, description, status, startTime, duration);
     }
 
     public Epic(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
@@ -41,33 +31,30 @@ public class Epic extends Task {
         subtasksId.add(id);
     }
 
-    @Override
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-    @Override
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
+//    @Override
+//    public LocalDateTime getEndTime() {
+//        return endTime;
+//    }
+//
+//    @Override
+//    public void setEndTime(LocalDateTime endTime) {
+//        this.endTime = endTime;
+//    }
 
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
     }
 
-    //    @Override
-//    public String toString() {
-//        return getType() +
-//                "id=" + id +
-//                ", name=" + name +
-//                ", description=" + description +
-//                ", status=" + status +
-//                ", duration=" + duration +
-//                ", startTime=" + startTime.format(formatter) +
-//                ", endTime=" + getEndTime().format(formatter) + "\n";
-//    }
     @Override
     public String toString() {
-        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
+        return getType() +
+                "id=" + id +
+                ", name=" + name +
+                ", description=" + description +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime.format(formatter) +
+                ", endTime=" + getEndTime().format(formatter) + "\n";
     }
 }

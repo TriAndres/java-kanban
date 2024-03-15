@@ -13,28 +13,15 @@ public class Task implements Tasks {
     protected LocalDateTime startTime;
     protected Long duration;
 
-    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    protected  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    public Task(String description) {
-        this.description = description;
-        this.id = getId();
-        this.status = Status.NEW;
-        setName("Задача");
-    }
-
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, LocalDateTime startTime, Long duration) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
-
-    public Task(Integer id, String name, String description, Status status) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-
     public Task(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
         this.id = id;
         this.name = name;
@@ -119,21 +106,16 @@ public class Task implements Tasks {
         return TaskType.TASK;
     }
 
-    //@Override
-//    public String toString() {
-//        return getType() +
-//                "id=" + id +
-//                ", name=" + name +
-//                ", description=" + description +
-//                ", status=" + status +
-//                ", duration=" + duration +
-//                ", startTime=" + startTime.format(formatter) +
-//                ", endTime=" + getEndTime().format(formatter) + "\n";
-//    }
-
     @Override
     public String toString() {
-        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
+        return getType() +
+                "id=" + id +
+                ", name=" + name +
+                ", description=" + description +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime.format(formatter) +
+                ", endTime=" + getEndTime().format(formatter) + "\n";
     }
 
     @Override

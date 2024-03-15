@@ -6,20 +6,27 @@ import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CSV {
+    protected static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public static String toString(Task task) {
-        String string;
         if (task instanceof Epic) {
-            string = String.format("%s,%d,%s,%s,%s%n", task.getType(), task.getId(), task.getName(), task.getDescription(), task.getStatus());
+            String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
+                    String.valueOf(task.getStartTime().format(formatter)),String.valueOf(task.getDuration())};
+            return String.join(",", toJoin) + "\n";
         } else if (task instanceof Subtask) {
             Integer epicId = ((Subtask) task).getEpicId();
-            string = String.format("%s,%d,%s,%s,%s,%d%n", task.getType(), task.getId(), task.getName(), task.getDescription(), task.getStatus(), epicId);
+            String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
+                    String.valueOf(task.getStartTime().format(formatter)),String.valueOf(task.getDuration()), String.valueOf(epicId)};
+            return String.join(",", toJoin) + "\n";
         } else {
-            string = String.format("%s,%d,%s,%s,%s%n", task.getType(), task.getId(), task.getName(), task.getDescription(), task.getStatus());
+            String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
+                    String.valueOf(task.getStartTime().format(formatter)),String.valueOf(task.getDuration())};
+            return String.join(",", toJoin) + "\n";
         }
-        return string;
     }
 
     public Task fromString(String value) {
@@ -27,13 +34,13 @@ public class CSV {
         if (line[0].equals("type") || line[0].equals("History")) {
         }
         if (line[0].equals("TASK")) {
-            return new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()));
+            return new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]));
         }
         if (line[0].equals("EPIC")) {
-            return new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()));
+            return new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]));
         }
         if (line[0].equals("SUBTASK")) {
-            return new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), Integer.parseInt(line[5]));
+            return new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]), Integer.parseInt(line[7]));
         }
         return null;
     }

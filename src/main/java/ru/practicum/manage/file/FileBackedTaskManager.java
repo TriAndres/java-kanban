@@ -1,8 +1,7 @@
 package ru.practicum.manage.file;
 
 import ru.practicum.exseption.ManagerSaveException;
-import ru.practicum.manage.memory.history.HistoryManager;
-import ru.practicum.manage.memory.task.InMemoryTaskManager;
+import ru.practicum.manage.memory.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -12,7 +11,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -44,9 +42,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     ));
                     Epic epic2 = new Epic(
                             "Epic 2", "Эпик 2",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            2L);
+                            Status.NEW);
                     manager.addNewEpic(epic2);
 
                     manager.addNewSubtask(new Subtask(

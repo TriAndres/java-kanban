@@ -1,4 +1,4 @@
-package ru.practicum.manage.memory.task;
+package ru.practicum.manage.memory;
 
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;

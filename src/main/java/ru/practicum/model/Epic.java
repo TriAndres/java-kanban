@@ -1,25 +1,18 @@
 package ru.practicum.model;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subtasksId = new ArrayList<>();
-    private LocalDateTime endTime;
+    private final ArrayList<Integer> subtasksId = new ArrayList<>();
 
-    public Epic(String name, String description, Status status, LocalDateTime startTime, Long duration) {
-        super(name, description, status, startTime, duration);
+    public Epic(String name, String description, Status status) {
+        super(name, description, status);
     }
 
-    public Epic(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
-        super(id, name, description, status, startTime, duration);
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, status);
     }
 
-    public Epic(Epic epic) {
-        super(epic);
-        this.subtasksId = epic.subtasksId;
-    }
 
     @Override
     public ArrayList<Integer> getSubtasksId() {
@@ -31,16 +24,6 @@ public class Epic extends Task {
         subtasksId.add(id);
     }
 
-//    @Override
-//    public LocalDateTime getEndTime() {
-//        return endTime;
-//    }
-//
-//    @Override
-//    public void setEndTime(LocalDateTime endTime) {
-//        this.endTime = endTime;
-//    }
-
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
@@ -48,13 +31,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return getType() +
-                "id=" + id +
-                ", name=" + name +
-                ", description=" + description +
-                ", status=" + status +
-                ", duration=" + duration +
-                ", startTime=" + startTime.format(formatter) +
-                ", endTime=" + getEndTime().format(formatter) + "\n";
+        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
     }
 }

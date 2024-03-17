@@ -14,7 +14,17 @@ public class Task implements Tasks {
     protected Long duration;
 
     protected  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+    public Task(Integer id, String name, String description, Status status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
     public Task(String name, String description, Status status, LocalDateTime startTime, Long duration) {
         this.name = name;
         this.description = description;
@@ -29,15 +39,6 @@ public class Task implements Tasks {
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
-    }
-
-    public Task(Task task) {
-        this.id = task.id;
-        this.name = task.name;
-        this.description = task.description;
-        this.status = task.status;
-        this.startTime = task.startTime;
-        this.duration = task.duration;
     }
 
     @Override
@@ -109,7 +110,7 @@ public class Task implements Tasks {
     @Override
     public String toString() {
         return getType() +
-                "id=" + id +
+                ", id=" + id +
                 ", name=" + name +
                 ", description=" + description +
                 ", status=" + status +

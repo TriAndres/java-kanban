@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 public class Subtask extends Task {
     private Integer idEpic;
 
+    public Subtask(String name, String description, Status status) {
+        super(name, description, status);
+    }
+
     public Subtask(String name, String description, Status status, LocalDateTime startTime, Long duration, Integer idEpic) {
         super(name, description, status, startTime, duration);
         this.idEpic = idEpic;
@@ -14,11 +18,6 @@ public class Subtask extends Task {
     public Subtask(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration, Integer idEpic) {
         super(id, name, description, status, startTime, duration);
         this.idEpic = idEpic;
-    }
-
-    public Subtask(Subtask subtask) {
-        super(subtask);
-        this.idEpic = subtask.idEpic;
     }
 
     @Override
@@ -39,7 +38,7 @@ public class Subtask extends Task {
             @Override
     public String toString() {
         return getType() +
-                "id=" + id +
+                ", id=" + id +
                 ", name=" + name +
                 ", description=" + description +
                 ", status=" + status +

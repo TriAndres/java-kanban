@@ -70,7 +70,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllTask() {
         if (!taskMap.isEmpty()) {
             for (Integer id : taskMap.keySet()) {
-                remove(id);///
+                remove(id);
                 prioritizedRemove(taskMap.get(id));
             }
             taskMap.clear();
@@ -81,13 +81,13 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllEpic() {
         if (!epicMap.isEmpty()) {
             for (Integer id : epicMap.keySet()) {
-                remove(id);///
+                remove(id);
             }
             epicMap.clear();
         }
         if (!subtaskMap.isEmpty()) {
             for (Integer id : subtaskMap.keySet()) {
-                remove(id);///
+                remove(id);
                 prioritizedRemove(subtaskMap.get(id));
             }
             subtaskMap.clear();
@@ -98,7 +98,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtask() {
         if (!subtaskMap.isEmpty()) {
             for (Integer id : subtaskMap.keySet()) {
-                remove(id);///
+                remove(id);
                 prioritizedRemove(subtaskMap.get(id));
             }
         }
@@ -222,7 +222,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteIdTask(Integer id) {
         if (taskMap.containsKey(id)) {
             taskMap.remove(id);
-            remove(id);//
+            remove(id);
             prioritizedRemove(taskMap.get(id));
         }
     }
@@ -236,7 +236,7 @@ public class InMemoryTaskManager implements TaskManager {
                 prioritizedRemove(subtaskMap.remove(subtaskId));
             }
             epicMap.remove(id);
-            remove(id);///
+            remove(id);
         }
     }
 
@@ -249,7 +249,7 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.getSubtasksId().remove(id);
             }
             subtaskMap.remove(id);
-            remove(id);///
+            remove(id);
             prioritizedRemove(subtaskMap.get(id));
             statusEpic(epic);
         }
@@ -291,29 +291,25 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
-
-
     public boolean checkTime(Task task1) {
-//        List<Task> taskList = List.copyOf(getPrioritizedTasks());
-//        int countTimeNull = 0;
-//        if (!taskList.isEmpty()) {
-//            for (Task task2 : taskList) {
-//                if (task2.getStartTime() != null && task2.getEndTime() != null) {
-//                    if (task1.getStartTime().isBefore(task2.getStartTime()) && task1.getEndTime().isBefore(task2.getEndTime())) {
-//                        return true;
-//                    } else if (task1.getStartTime().isAfter(task2.getStartTime()) && task1.getEndTime().isAfter(task2.getEndTime())) {
-//                        return true;
-//                    }
-//                } else {
-//                    countTimeNull++;
-//                }
-//            }
-//            return countTimeNull == taskList.size();
-//        } else {
-//            return true;
-//        }
-        return false;
+        List<Task> taskList = List.copyOf(getPrioritizedTasks());
+        int countTimeNull = 0;
+        if (!taskList.isEmpty()) {
+            for (Task task2 : taskList) {
+                if (task2.getStartTime() != null && task2.getEndTime() != null) {
+                    if (task1.getStartTime().isBefore(task2.getStartTime()) && task1.getEndTime().isBefore(task2.getEndTime())) {
+                        return true;
+                    } else if (task1.getStartTime().isAfter(task2.getStartTime()) && task1.getEndTime().isAfter(task2.getEndTime())) {
+                        return true;
+                    }
+                } else {
+                    countTimeNull++;
+                }
+            }
+            return countTimeNull == taskList.size();
+        } else {
+            return true;
+        }
     }
 
     public void validate() {
@@ -324,6 +320,21 @@ public class InMemoryTaskManager implements TaskManager {
             if (checkTime) {
                 throw new ManagerValidateException("Задачи  пересекаются");
             }
+        }
+    }
+
+    public void addPrioritizedTasks(Task task) {
+        prioritizedAdd(task);//validate();
+    }
+    public void prioritizedAdd(Task task) {
+        if (task != null) {
+            prioritized.add(task);
+        }
+    }
+
+    public void prioritizedRemove(Task task) {
+        if (task != null) {
+            prioritized.remove(task);
         }
     }
 
@@ -340,19 +351,5 @@ public class InMemoryTaskManager implements TaskManager {
 
     public List<Task> getHistory() {
         return historyManager.getHistory();
-    }
-    public void addPrioritizedTasks(Task task) {
-        prioritizedAdd(task);//validate();
-    }
-    public void prioritizedAdd(Task task) {
-        if (task != null) {
-            prioritized.add(task);
-        }
-    }
-
-    public void prioritizedRemove(Task task) {
-        if (task != null) {
-            prioritized.remove(task);
-        }
     }
 }

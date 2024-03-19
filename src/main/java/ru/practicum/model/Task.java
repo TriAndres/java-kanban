@@ -92,14 +92,16 @@ public class Task implements Tasks {
     public void setDuration(Long duration) {
         this.duration = duration;
     }
+
+    @Override
+    public Long getDuration() {
+        return duration;
+    }
+
     @Override
     public LocalDateTime getEndTime() {
         long MINUTE = 60L;
         return startTime.plusSeconds(duration * MINUTE);
-    }
-    @Override
-    public Long getDuration() {
-        return duration;
     }
 
     @Override

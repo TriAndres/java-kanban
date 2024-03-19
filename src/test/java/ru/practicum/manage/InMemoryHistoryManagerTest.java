@@ -1,4 +1,4 @@
-package ru.practicum.manage.memory;
+package ru.practicum.manage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,8 @@ import ru.practicum.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.practicum.model.Status.NEW;
 
 class InMemoryHistoryManagerTest {

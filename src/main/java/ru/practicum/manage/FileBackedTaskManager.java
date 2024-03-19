@@ -1,69 +1,19 @@
-package ru.practicum.manage.file;
+package ru.practicum.manage;
 
 import ru.practicum.exseption.ManagerSaveException;
-import ru.practicum.manage.memory.InMemoryTaskManager;
 import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
 
     public FileBackedTaskManager( File file) {
         this.file = file;
-    }
-
-    public static void main(String[] args) {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
-        FileBackedTaskManager manager = loadFromFile(file);
-        while (true) {
-
-            System.out.println("""
-                    Действие:
-                    1 - тест1
-                    2 - тест2
-                    """);
-            String line = new Scanner(System.in).nextLine();
-            switch (line) {
-                case "1":
-                    // Спринт 8
-                    manager.addNewTask(new Task(
-                            "Task 1", "Задача 1",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            1L
-                    ));
-                    Epic epic2 = new Epic(
-                            "Epic 2", "Эпик 2",
-                            Status.NEW);
-                    manager.addNewEpic(epic2);
-
-                    manager.addNewSubtask(new Subtask(
-                            "Subtask 3", "Субтаск 3",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            3L,
-                            epic2.getId()
-
-                    ));
-                    System.out.println(manager.getTaskId(1));
-                    System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getSubtaskId(3));
-                    break;
-                case "2":
-                    System.out.println(manager.getTaskId(1));
-                    System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getSubtaskId(3));
-                    break;
-            }
-        }
     }
 
     public void save() {
@@ -211,7 +161,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (reader.ready()) {
                 String line = reader.readLine();
+
                 Task task = csv.fromString(line);
+
                 if (task instanceof Epic epic) {
                     fileBackedTaskManager.updateEpic(epic);
                 }
@@ -221,9 +173,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     fileBackedTaskManager.updateTask(task);
                 }
             }
+
+            String lineWithHistory = reader.readLine();
+            for (int id : CSV.historyFromString(lineWithHistory)) {
+                fileBackedTaskManager.add(id);
+            }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при Чтении.");
         }
         return fileBackedTaskManager;
+    }
+
+    private static void lineWithHistory(int id) {
     }
 }

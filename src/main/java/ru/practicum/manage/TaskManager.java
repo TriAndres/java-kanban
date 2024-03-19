@@ -1,10 +1,11 @@
-package ru.practicum.manage.memory;
+package ru.practicum.manage;
 
 import ru.practicum.model.Epic;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     // a. Получение списка всех задач.
@@ -48,4 +49,7 @@ public interface TaskManager {
     void deleteIdEpic(Integer id);
 
     void deleteIdSubtask(Integer id);
+
+    //Дополнительно
+    List<Subtask> getListSubtaskIdEpic(Integer id);
 }

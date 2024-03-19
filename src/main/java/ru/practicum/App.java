@@ -1,6 +1,7 @@
 package ru.practicum;
 
 import ru.practicum.manage.FileBackedTaskManager;
+import ru.practicum.manage.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -9,56 +10,57 @@ import ru.practicum.model.Task;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
 public class App {
     public static void main(String[] args) {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\test.csv");
-        FileBackedTaskManager manager = loadFromFile(file);
-        while (true) {
-
-            System.out.println("""
-                    Действие:
-                    1 - тест1
-                    2 - тест2
-                    """);
-            String line = new Scanner(System.in).nextLine();
-            switch (line) {
-                case "1":
-                    // Спринт 8
-                    manager.addNewTask(new Task(
-                            "Task 1", "Задача 1",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            1L
-                    ));
-                    Epic epic2 = new Epic(
-                            "Epic 2", "Эпик 2",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            2L
-                            );
-                    manager.addNewEpic(epic2);
-
-                    manager.addNewSubtask(new Subtask(
-                            "Subtask 3", "Субтаск 3",
-                            Status.NEW,
-                            LocalDateTime.now(),
-                            3L,
-                            epic2.getId()
-
-                    ));
-                    System.out.println(manager.getTaskId(1));
-                    System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getSubtaskId(3));
-                    break;
-                case "2":
-                    System.out.println(manager.getTaskId(1));
-                    System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getSubtaskId(3));
-                    break;
-            }
-        }
+        InMemoryTaskManager manager = new InMemoryTaskManager();
+        Epic epic = new Epic("новый эпик 1", "описание эпика 1", Status.NEW, LocalDateTime.of(2022, 12, 30, 0, 30), 0L);
+        manager.addNewEpic(epic);
+//Данная задача должна быть 4 по счёту
+        Subtask subtask1 = new Subtask("новая подзадача 1", "описание подзадачи 1", Status.NEW,
+                LocalDateTime.of(2022, 12, 30, 0, 30).plusDays(2), 15L, epic.getId());
+        manager.addNewSubtask(subtask1);
+//Данная задача должна быть 1 по счёту
+        Subtask subtask2 = new Subtask("новая подзадача 2", "описание подзадачи 2", Status.NEW,
+                LocalDateTime.of(2022, 12, 30, 0, 30), 30L, epic.getId());
+        manager.addNewSubtask(subtask2);
+//Данная задача должна быть 3 по счёту
+        Subtask subtask3 = new Subtask("новая подзадача 3", "описание подзадачи 3", Status.NEW,
+                LocalDateTime.of(2022, 12, 30, 0, 30).plusDays(1), 45L, epic.getId());
+        manager.addNewSubtask(subtask3);
+//Данная задача должна быть 2 по счёту
+        Subtask subtask4 = new Subtask("новая подзадача 4", "описание подзадачи 4", Status.NEW,
+                LocalDateTime.of(2022, 12, 30, 0, 30).plusHours(12), 60L, epic.getId());
+        manager.addNewSubtask(subtask4);
+//Порядок добавления следующий subtask1 -> subtask2 -> subtask3 -> subtask4
+//Порядок следующий subtask2 -> subtask4 -> subtask3 -> subtask1
+        System.out.println(epic.getDuration() + " == " + (subtask1.getDuration() + (subtask2.getDuration() + (subtask3.getDuration())) + (subtask4.getDuration()) + " " + (epic.getDuration().equals(subtask1.getDuration() + ((subtask2.getDuration() + ((subtask3.getDuration()) + (subtask4.getDuration()))))))));
+        System.out.println(epic.getStartTime() + " == " + subtask2.getStartTime() + " " + epic.getStartTime().equals(subtask2.getStartTime()));
+        System.out.println(epic.getEndTime() + " == " + subtask1.getEndTime() + " " + epic.getEndTime().equals(subtask1.getEndTime()));
+        System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
+//Удаление подзадачи subtask3
+        manager.deleteIdSubtask(subtask3.getId());
+//Новый порядок subtask2 -> subtask4 -> subtask1
+        System.out.println(epic.getDuration() + " == " + (subtask1.getDuration() + (subtask2.getDuration() + (subtask4.getDuration())) + " " + (epic.getDuration().equals(subtask1.getDuration() + ((subtask2.getDuration())) + ((subtask4.getDuration()))))));
+        System.out.println(epic.getStartTime() + " == " + subtask2.getStartTime() + " " + epic.getStartTime().equals(subtask2.getStartTime()));
+        System.out.println(epic.getEndTime() + " == " + subtask1.getEndTime() + " " + epic.getEndTime().equals(subtask1.getEndTime()));
+        System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
+//Удаление подзадачи subtask2
+        manager.deleteIdSubtask(subtask2.getId());
+//Новый порядок subtask4 -> subtask1
+        System.out.println(epic.getDuration() + " == " + (subtask1.getDuration() + (subtask4.getDuration()) + " " + (epic.getDuration().equals(subtask1.getDuration() + (subtask4.getDuration())))));
+        System.out.println(epic.getStartTime() + " == " + subtask4.getStartTime() + " " + epic.getStartTime().equals(subtask4.getStartTime()));
+        System.out.println(epic.getEndTime() + " == " + subtask1.getEndTime() + " " + epic.getEndTime().equals(subtask1.getEndTime()));
+        System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
+//Удаление подзадачи subtask1
+        manager.deleteIdSubtask(subtask1.getId());
+//Новый порядок subtask4
+        System.out.println(epic.getDuration() + " == " + subtask4.getDuration() + " " + (epic.getDuration().equals(subtask4.getDuration())));
+        System.out.println(epic.getStartTime() + " == " + subtask4.getStartTime() + " " + epic.getStartTime().equals(subtask4.getStartTime()));
+        System.out.println(epic.getEndTime() + " == " + subtask4.getEndTime() + " " + epic.getEndTime().equals(subtask4.getEndTime()));
+        System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
     }
 }

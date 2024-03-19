@@ -34,17 +34,16 @@ public class Subtask extends Task {
         return TaskType.SUBTASK;
     }
 
-            @Override
+    @Override
     public String toString() {
         return getType() +
-                ", id=" + id +
-                ", name=" + name +
-                ", description=" + description +
-                ", status=" + status +
-                ", duration=" + duration +
-                ", startTime=" + startTime.format(formatter) +
+                ", id=" + getId() +
+                ", name=" + getName() +
+                ", description=" + getDescription() +
+                ", status=" + getStatus() +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime().format(formatter) +
                 ", endTime=" + getEndTime().format(formatter) +
-                ", idEpic = " + idEpic + "\n";
-
+                ", idEpic = " + getEpicId() + "\n";
     }
 }

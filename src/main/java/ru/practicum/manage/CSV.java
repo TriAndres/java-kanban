@@ -30,8 +30,6 @@ public class CSV {
 
     public Task fromString(String value) {
         String[] line = value.split(",");
-        if (line[0].equals("type") || line[0].equals("History")) {
-        }
 
         if (line[0].equals("TASK")) {
             return new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]));
@@ -43,6 +41,9 @@ public class CSV {
 
         if (line[0].equals("SUBTASK")) {
             return new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]), Integer.parseInt(line[7]));
+        }
+        if (line[0].equals("type") || line[0].equals("History")) {
+
         }
         return null;
     }

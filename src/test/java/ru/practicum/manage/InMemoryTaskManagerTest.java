@@ -13,19 +13,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
+public class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager>{
     InMemoryTaskManager manager = new InMemoryTaskManager();
 
     protected Task addTask() {
-        return new Task("name", "description", Status.NEW, LocalDateTime.now(), 1L);
+        return new Task("name", "description", Status.NEW, LocalDateTime.now(), 0L);
     }
 
     protected Epic addEpic() {
-        return new Epic("name", "description", Status.NEW, LocalDateTime.now(), 2L);
+        return new Epic("name", "description", Status.NEW, LocalDateTime.now(), 0L);
     }
 
     protected Subtask addSubtask(Epic epic) {
-        return new Subtask("name", "description", Status.NEW, LocalDateTime.now(), 3L, epic.getId());
+        return new Subtask("name", "description", Status.NEW, LocalDateTime.now(), 0L, epic.getId());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void updateTask() {
-        Task task1 = new Task("name 1", "description 1", Status.NEW, LocalDateTime.now(), 1L);
+        Task task1 = new Task("name 1", "description 1", Status.NEW, LocalDateTime.now(), 0L);
         manager.addNewTask(task1);
         Task task2 = manager.getTaskId(task1.getId());
         System.out.println(task2);
@@ -118,19 +118,19 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void updateEpic() {
-//        Epic task1 = new Epic("name", "description", Status.NEW, LocalDateTime.now(), 2L);
-//        manager.addNewEpic(task1);
-//        Epic task2 = manager.getEpicId(task1.getId());
-//        System.out.println(task2);
-//        assertEquals(task1, task2);
-//        task2.setName("name 2");
-//        task2.setDescription("description 2");
-//        task2.setStatus(Status.IN_PROGRESS);
-//        manager.updateTask(task2);
-//        task2 = manager.getEpicId(task1.getId());
-//        assertEquals(task1, task2);
-//        System.out.println(task1);
-//        assertEquals(1, manager.getEpics().size());
+        Epic task1 = new Epic("name", "description", Status.NEW, LocalDateTime.now(), 0L);
+        manager.addNewEpic(task1);
+        Epic task2 = manager.getEpicId(task1.getId());
+        System.out.println(task2);
+        assertEquals(task1, task2);
+        task2.setName("name 2");
+        task2.setDescription("description 2");
+        task2.setStatus(Status.IN_PROGRESS);
+        manager.updateTask(task2);
+        task2 = manager.getEpicId(task1.getId());
+        assertEquals(task1, task2);
+        System.out.println(task1);
+        assertEquals(1, manager.getEpics().size());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         Epic epic = addEpic();
         manager.addNewEpic(epic);
 
-        Subtask task1 = new Subtask("name", "description", Status.NEW, LocalDateTime.now(), 3L, epic.getId());
+        Subtask task1 = new Subtask("name", "description", Status.NEW, LocalDateTime.now(), 0L, epic.getId());
         manager.addNewSubtask(task1);
         Subtask task2 = manager.getSubtaskId(task1.getId());
         System.out.println(task2);

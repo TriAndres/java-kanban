@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
-class FileBackedTaskManagerTest extends InMemoryTaskManagerTest{
+class FileBackedTaskManagerTest{
     public static File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
     FileBackedTaskManager manager;
     @BeforeEach

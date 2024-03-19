@@ -1,8 +1,5 @@
 type,id,name,description,status,startTime,duration,epicId
-TASK,1,Task 1,Задача 1,NEW,19.03.2024 04:24,1
-TASK,4,Task 1,Задача 1,NEW,19.03.2024 04:59,1
-EPIC,2,Epic 2,Эпик 2,DONE,19.03.2024 04:59,0
-EPIC,5,Epic 2,Эпик 2,DONE,19.03.2024 04:59,0
-SUBTASK,3,Subtask 3,Субтаск 3,NEW,19.03.2024 04:59,3,2
-SUBTASK,6,Subtask 3,Субтаск 3,NEW,19.03.2024 04:59,3,5
-History 1,2,3,
+TASK,1,Task 1,Задача 1,NEW,19.03.2024 08:53,1
+EPIC,2,Epic 2,Эпик 2,DONE,19.03.2024 08:53,0
+EPIC,2,Epic 2,Эпик 2,DONE,19.03.2024 08:53,0
+History 1,2,

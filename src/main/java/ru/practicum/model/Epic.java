@@ -18,6 +18,7 @@ public class Epic extends Task {
 
     public Epic(String name, String description, Status status, LocalDateTime startTime, Long duration) {
         super(name, description, status, startTime, duration);
+        this.endTime = super.getEndTime();
     }
 
     public Epic(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
@@ -50,20 +51,15 @@ public class Epic extends Task {
         return TaskType.EPIC;
     }
 
-//    @Override
-//    public String toString() {
-//        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
-//    }
-
     @Override
     public String toString() {
         return getType() +
-                ", id=" + id +
-                ", name=" + name +
-                ", description=" + description +
-                ", status=" + status +
-                ", duration=" + duration +
-                ", startTime=" + startTime.format(formatter) +
-                ", endTime=" + endTime.format(formatter) + "\n";
+                ", id=" + getId() +
+                ", name=" + getName() +
+                ", description=" + getDescription() +
+                ", status=" + getStatus() +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime().format(formatter) +
+                ", endTime=" + getEndTime().format(formatter) + "\n";
     }
 }

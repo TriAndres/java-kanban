@@ -8,15 +8,16 @@ import ru.practicum.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    protected static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -41,22 +42,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     manager1.addNewTask(new Task(
                             "Task 1", "Задача 1",
                             Status.NEW,
-                            LocalDateTime.now(),
-                            1L
+                            Duration.ofMinutes(1L),
+                            LocalDateTime.now()
+
                     ));
                     Epic epic2 = new Epic(
                             "Epic 2", "Эпик 2",
                             Status.NEW,
-                            LocalDateTime.now(),
-                            2L
+                            Duration.ofMinutes(2L),
+                            LocalDateTime.now()
+
                     );
                     manager1.addNewEpic(epic2);
 
                     manager1.addNewSubtask(new Subtask(
                             "Subtask 3", "Субтаск 3",
                             Status.NEW,
+                            Duration.ofMinutes(3L),
                             LocalDateTime.now(),
-                            3L,
+
                             epic2.getId()
 
                     ));
@@ -81,17 +85,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
-                    writer.write(CSV.toString(task));
+                    writer.write(Objects.requireNonNull(CSV.toString(task)));
                 }
             }
             for (Epic epic : epicMap.values()) {
                 if (epic != null) {
-                    writer.write(CSV.toString(epic));
+                    writer.write(Objects.requireNonNull(CSV.toString(epic)));
                 }
             }
             for (Subtask subtask : subtaskMap.values()) {
                 if (subtask != null) {
-                    writer.write(CSV.toString(subtask));
+                    writer.write(Objects.requireNonNull(CSV.toString(subtask)));
                 }
             }
             writer.write(CSV.historyToString(historyManager));
@@ -227,14 +231,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 if (task instanceof Subtask subtask) {
                     fileBackedTaskManager.updateSubtask(subtask);
-                } else {
-
+                }
+                if (task instanceof Task task1) {
+                    fileBackedTaskManager.updateTask(task1);
                 }
             }
-                String lineWithHistory = reader.readLine();
-                for (int id : CSV.historyFromString(lineWithHistory)) {
-                    fileBackedTaskManager.add(id);
-                }
+            String lineWithHistory = reader.readLine();
+            for (int id : CSV.historyFromString(lineWithHistory)) {
+                fileBackedTaskManager.add(id);
+            }
 
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при Чтении.");

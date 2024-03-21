@@ -1,6 +1,8 @@
-package ru.practicum.manage;
+package manage;
 
 import org.junit.jupiter.api.Test;
+import ru.practicum.manage.InMemoryTaskManager;
+import ru.practicum.manage.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -11,10 +13,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class TaskManagerTest<T extends TaskManager> {
-    protected T manager;
+public class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager>{
+    InMemoryTaskManager manager = new InMemoryTaskManager();
 
     protected Task addTask() {
         return new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
@@ -153,7 +156,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, manager.getSubtasks().size());
         System.out.println(manager.getSubtasks());
     }
-
     @Test
     void deleteAllTask() {
         Task task = addTask();
@@ -166,7 +168,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(Collections.EMPTY_LIST, manager.getTasks());
 
     }
-
     @Test
     void deleteAllEpic() {
         Epic epic = addEpic();
@@ -178,7 +179,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.deleteAllEpic();
         assertEquals(Collections.EMPTY_LIST, manager.getEpics());
     }
-
     @Test
     void deleteAllSubtask() {
         Epic epic = addEpic();
@@ -193,9 +193,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.deleteAllSubtask();
         assertEquals(Collections.EMPTY_LIST, manager.getSubtasks());
     }
-
     @Test
-    public void getListSubtaskIdEpic() {
+    public  void  getListSubtaskIdEpic() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
 

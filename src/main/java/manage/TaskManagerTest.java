@@ -1,6 +1,7 @@
-package ru.practicum.manage;
+package manage;
 
 import org.junit.jupiter.api.Test;
+import ru.practicum.manage.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -11,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;

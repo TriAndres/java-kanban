@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -10,29 +11,19 @@ public class Task implements Tasks {
     protected String name;
     protected String description;
     protected Status status;
+    protected Duration duration;
     protected LocalDateTime startTime;
-    protected Long duration;
 
     protected  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    public Task(String name, String description, Status status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-    public Task(Integer id, String name, String description, Status status) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-    public Task(String name, String description, Status status, LocalDateTime startTime, Long duration) {
+
+    public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
     }
-    public Task(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
+    public Task(Integer id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -80,6 +71,16 @@ public class Task implements Tasks {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public Duration getDuration() {
+        return duration;
+    }
     @Override
     public LocalDateTime getStartTime() {
         return startTime;
@@ -88,20 +89,10 @@ public class Task implements Tasks {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
-    @Override
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }
-
-    @Override
-    public Long getDuration() {
-        return duration;
-    }
 
     @Override
     public LocalDateTime getEndTime() {
-        long MINUTE = 60L;
-        return startTime.plusSeconds(duration * MINUTE);
+        return startTime.plus(duration);
     }
 
     @Override
@@ -116,7 +107,7 @@ public class Task implements Tasks {
                 ", name=" + name +
                 ", description=" + description +
                 ", status=" + status +
-                ", duration=" + duration +
+                ", duration=" + duration.toMinutes() +
                 ", startTime=" + startTime.format(formatter) +
                 ", endTime=" + getEndTime().format(formatter) + "\n";
     }
@@ -126,11 +117,11 @@ public class Task implements Tasks {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(startTime, task.startTime) && Objects.equals(duration, task.duration);
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(formatter, task.formatter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, startTime, duration);
+        return Objects.hash(id, name, description, status, duration, startTime, formatter);
     }
 }

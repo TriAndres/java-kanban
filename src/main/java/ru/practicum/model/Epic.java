@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -7,22 +8,13 @@ public class Epic extends Task {
     private final ArrayList<Integer> subtasksId = new ArrayList<>();
     private transient LocalDateTime endTime;
 
-    public Epic(String name, String description, Status status) {
-        super(name, description, status);
-    }
-
-    public Epic(int id, String name, String description, Status status) {
-        super(id, name, description, status);
-
-    }
-
-    public Epic(String name, String description, Status status, LocalDateTime startTime, Long duration) {
-        super(name, description, status, startTime, duration);
+    public Epic(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
         this.endTime = super.getEndTime();
     }
 
-    public Epic(Integer id, String name, String description, Status status, LocalDateTime startTime, Long duration) {
-        super(id, name, description, status, startTime, duration);
+    public Epic(Integer id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
         this.endTime = super.getEndTime();
     }
 
@@ -49,17 +41,5 @@ public class Epic extends Task {
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
-    }
-
-    @Override
-    public String toString() {
-        return getType() +
-                ", id=" + getId() +
-                ", name=" + getName() +
-                ", description=" + getDescription() +
-                ", status=" + getStatus() +
-                ", duration=" + getDuration() +
-                ", startTime=" + getStartTime().format(formatter) +
-                ", endTime=" + getEndTime().format(formatter) + "\n";
     }
 }

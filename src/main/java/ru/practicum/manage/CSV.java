@@ -5,45 +5,55 @@ import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSV {
     protected static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
     public static String toString(Task task) {
         if (task instanceof Epic) {
             String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
-                    String.valueOf(task.getStartTime().format(formatter)),String.valueOf(task.getDuration())};
+                    String.valueOf(task.getDuration()), String.valueOf(task.getStartTime().format(formatter))};
             return String.join(",", toJoin) + "\n";
         } else if (task instanceof Subtask) {
             String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
-                    String.valueOf(task.getStartTime().format(formatter)),String.valueOf(task.getDuration()), String.valueOf(task.getEpicId())};
+                    String.valueOf(task.getDuration()), String.valueOf(task.getStartTime().format(formatter)), String.valueOf(task.getEpicId())};
             return String.join(",", toJoin) + "\n";
-        } else {
+        } else if ((task instanceof Task)) {
             String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
-                    String.valueOf(task.getStartTime().format(formatter)), String.valueOf(task.getDuration())};
+                    String.valueOf(task.getDuration()), String.valueOf(task.getStartTime().format(formatter))};
             return String.join(",", toJoin) + "\n";
         }
+        return null;
     }
+
 
     public Task fromString(String value) {
         String[] line = value.split(",");
-
+        if (line[0].equals("type")) {
+            return null;
+        }
         if (line[0].equals("TASK")) {
-            return new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]));
+            return new Task(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()),
+                    Duration.parse(line[5]), LocalDateTime.parse(line[6], formatter));
         }
 
         if (line[0].equals("EPIC")) {
-            return new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]));
+            return new Epic(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()),
+                    Duration.parse(line[5]), LocalDateTime.parse(line[6], formatter));
         }
 
         if (line[0].equals("SUBTASK")) {
-            return new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()), LocalDateTime.parse(line[5], formatter), Long.parseLong(line[6]), Integer.parseInt(line[7]));
+            return new Subtask(Integer.parseInt(line[1]), line[2], line[3], Status.valueOf(line[4].toUpperCase()),
+                    Duration.parse(line[5]), LocalDateTime.parse(line[6], formatter), Integer.parseInt(line[7]));
         }
-        if (line[0].equals("type") || line[0].equals("History")) {
-
+        if (line[0].equals("History")) {
+            return null;
         }
         return null;
     }

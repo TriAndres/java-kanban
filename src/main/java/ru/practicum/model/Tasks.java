@@ -1,5 +1,6 @@
 package ru.practicum.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -40,14 +41,14 @@ public interface Tasks {
     default void setStartTime(LocalDateTime startTime) {
     }
 
-    default void setDuration(Long duration) {
+    default void setDuration(Duration duration) {
     }
 
     default LocalDateTime getEndTime() {
         return null;
     }
 
-    default Long getDuration() {
+    default Duration getDuration() {
         return null;
     }
 

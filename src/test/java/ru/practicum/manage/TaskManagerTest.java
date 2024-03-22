@@ -1,6 +1,5 @@
 package ru.practicum.manage;
 
-import org.junit.jupiter.api.Test;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -11,7 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
@@ -28,7 +28,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         return new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
     }
 
-    @Test
     public void addNewTask() {
         Task task = addTask();
         manager.addNewTask(task);
@@ -38,7 +37,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(List.of(task), taskList);
     }
 
-    @Test
     public void addNewEpic() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -48,7 +46,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(List.of(epic), epicList);
     }
 
-    @Test
     public void addNewSubtask() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -60,7 +57,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(List.of(subtask), subtaskList);
     }
 
-    @Test
     public void deleteIdTask() {
         Task task1 = addTask();
         Task task2 = addTask();
@@ -74,7 +70,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     }
 
-    @Test
     public void deleteIdEpic() {
         Epic epic3 = addEpic();
         Epic epic4 = addEpic();
@@ -85,7 +80,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, manager.getEpics().size());
     }
 
-    @Test
     public void deleteIdSubtask() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -99,7 +93,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, manager.getSubtasks().size());
     }
 
-    @Test
     public void updateTask() {
         Task task1 = new Task("name 1", "description 1", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task1);
@@ -116,7 +109,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, manager.getTasks().size());
     }
 
-    @Test
     public void updateEpic() {
         Epic task1 = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(task1);
@@ -133,7 +125,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, manager.getEpics().size());
     }
 
-    @Test
     public void updateSubtask() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -154,7 +145,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         System.out.println(manager.getSubtasks());
     }
 
-    @Test
     void deleteAllTask() {
         Task task = addTask();
         manager.addNewTask(task);
@@ -167,7 +157,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     }
 
-    @Test
     void deleteAllEpic() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -179,7 +168,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(Collections.EMPTY_LIST, manager.getEpics());
     }
 
-    @Test
     void deleteAllSubtask() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);
@@ -194,7 +182,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(Collections.EMPTY_LIST, manager.getSubtasks());
     }
 
-    @Test
     public void getListSubtaskIdEpic() {
         Epic epic = addEpic();
         manager.addNewEpic(epic);

@@ -1,5 +1,6 @@
 package ru.practicum.manage;
 
+import manage.TaskManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
-class FileBackedTaskManagerTest extends InMemoryTaskManager{
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     public static File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
-    FileBackedTaskManager manager;
     @BeforeEach
     public void beforeEach() {
         manager = new FileBackedTaskManager(file);

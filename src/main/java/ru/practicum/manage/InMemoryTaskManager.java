@@ -129,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!taskMap.containsKey(id)) {
             task.setId(id);
             taskMap.put(id, task);
+            prioritized.add(task);
             validate(task);
         }
     }
@@ -151,6 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epicMap.get(subtask.getEpicId());
             validate(subtask);
             subtaskMap.put(id, subtask);
+            prioritized.add(subtask);
             epic.addSubtask(id);
             statusEpic(epic);
         }
@@ -162,6 +164,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (!taskMap.containsKey(task.getId())){
             taskMap.put(task.getId(), task);
             Task oldTask = taskMap.get(task.getId());
+            prioritized.remove(oldTask);
+            prioritized.add(task);
             validate(task);
             remove(oldTask.getId());
             add(task.getId());
@@ -185,6 +189,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subtaskMap.containsKey(subtask.getId())) {
             subtaskMap.put(subtask.getId(), subtask);
             Subtask oldSubtask = subtaskMap.get(subtask.getId());
+            prioritized.remove(oldSubtask);
+            prioritized.add(subtask);
             subtask.setEpicId(oldSubtask.getEpicId());
             remove(oldSubtask.getId());
             add(subtask.getId());

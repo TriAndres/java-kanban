@@ -1,14 +1,10 @@
 package ru.practicum.manage;
 
-import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
-import ru.practicum.model.Subtask;
-import ru.practicum.model.Task;
+import ru.practicum.model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +20,7 @@ public class CSV {
             String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
                     String.valueOf(task.getDuration()), String.valueOf(task.getStartTime().format(formatter)), String.valueOf(task.getEpicId())};
             return String.join(",", toJoin) + "\n";
-        } else if ((task instanceof Task)) {
+        } else if (task instanceof Task) {
             String[] toJoin = {String.valueOf(task.getType()), String.valueOf(task.getId()), task.getName(), task.getDescription(), String.valueOf(task.getStatus()),
                     String.valueOf(task.getDuration()), String.valueOf(task.getStartTime().format(formatter))};
             return String.join(",", toJoin) + "\n";

@@ -33,7 +33,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     Действие:
                     1 - тест1
                     2 - тест2
-                    3 - тест3
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
@@ -225,7 +224,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (reader.ready()) {
                 String line = reader.readLine();
                 Task task = csv.fromString(line);
-                fileBackedTaskManager.updateTask(task);
                 if (task instanceof Epic epic) {
                     fileBackedTaskManager.updateEpic(epic);
                 }

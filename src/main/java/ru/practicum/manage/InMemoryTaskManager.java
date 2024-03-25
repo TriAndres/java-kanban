@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private static Integer generateId = 0;
     protected final Map<Integer, Task> taskMap = new HashMap<>();
     protected final Map<Integer, Epic> epicMap = new HashMap<>();
@@ -128,9 +127,9 @@ public class InMemoryTaskManager implements TaskManager {
         Integer id = generateId();
         if (!taskMap.containsKey(id)) {
             task.setId(id);
+            validate(task);
             taskMap.put(id, task);
             prioritized.add(task);
-            validate(task);
         }
     }
 
@@ -149,8 +148,8 @@ public class InMemoryTaskManager implements TaskManager {
         Integer id = generateId();
         if (!subtaskMap.containsKey(id)) {
             subtask.setId(id);
-            Epic epic = epicMap.get(subtask.getEpicId());
             validate(subtask);
+            Epic epic = epicMap.get(subtask.getEpicId());
             subtaskMap.put(id, subtask);
             prioritized.add(subtask);
             epic.addSubtask(id);
@@ -162,13 +161,13 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (task == null) return;
         if (!taskMap.containsKey(task.getId())){
-            taskMap.put(task.getId(), task);
-            Task oldTask = taskMap.get(task.getId());
-            prioritized.remove(oldTask);
-            prioritized.add(task);
             validate(task);
+            Task oldTask = taskMap.get(task.getId());
+            taskMap.put(task.getId(), task);
             remove(oldTask.getId());
             add(task.getId());
+            prioritized.remove(oldTask);
+            prioritized.add(task);
         }
     }
 
@@ -183,14 +182,29 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    /*
+     @Override
+    public void removeSubTask(int subTaskId) {
+        SubTask subTaskToRemove = subTasksMap.get(subTaskId);
+        int epicId = subTasksMap.get(subTaskId).getEpicId();
+        Epic epic = epicTasksMap.get(epicId);
+        if (subTaskToRemove.getEpicId() != 0) {
+            epic.removeTaskId(subTaskId);
+            syncEpic(epic);
+        }
+        anyTypeTasks.remove(subTasksMap.remove(subTaskId));
+        historyManager.remove(subTaskId);
+    }
+
+     */
+
     @Override
     public void updateSubtask(Subtask subtask) {
         if (subtask == null) return;
         if (!subtaskMap.containsKey(subtask.getId())) {
-            subtaskMap.put(subtask.getId(), subtask);
             Subtask oldSubtask = subtaskMap.get(subtask.getId());
-            prioritized.remove(oldSubtask);
-            prioritized.add(subtask);
+            validate(subtask);
+            subtaskMap.put(subtask.getId(), subtask);
             subtask.setEpicId(oldSubtask.getEpicId());
             remove(oldSubtask.getId());
             add(subtask.getId());
@@ -198,14 +212,15 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic epic = epicMap.get(subtask.getEpicId());
                 statusEpic(epic);
             }
+            prioritized.remove(oldSubtask);
+            prioritized.add(subtask);
         }
     }
 
     @Override
     public void deleteIdTask(Integer id) {
         if (taskMap.containsKey(id)) {
-            prioritized.remove(taskMap.get(id));
-            taskMap.remove(id);
+            prioritized.remove(taskMap.remove(id));
             remove(id);
         }
     }
@@ -225,13 +240,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteIdSubtask(Integer id) {
         if (subtaskMap.containsKey(id)) {
-            prioritized.remove(subtaskMap.get(id));
             Subtask subtask = subtaskMap.get(id);
             Epic epic = epicMap.get(subtask.getEpicId());
             epic.getSubtasksId().remove(id);
-            subtaskMap.remove(id);
-            remove(id);
+            //subtaskMap.remove(id);
             statusEpic(epic);
+            remove(id);
+            prioritized.remove(subtaskMap.remove(id));
         }
     }
 

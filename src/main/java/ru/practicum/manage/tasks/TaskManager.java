@@ -1,4 +1,4 @@
-package ru.practicum.manage;
+package ru.practicum.manage.tasks;
 
 import ru.practicum.exseption.ManagerValidateException;
 import ru.practicum.model.Epic;
@@ -81,8 +81,21 @@ public interface TaskManager {
         return new ArrayList<>();
     }
 
+    //методы из класса prioritized
+
+    default List<Task> getPrioritizedTasks() {
+        return null;
+    }
+
+    default void prioritizedAdd(Task task) {
+
+    }
+
     default void prioritizedRemove(Task task) {
 
     }
 
+    default void prioritizedClear() {
+
+    }
 }

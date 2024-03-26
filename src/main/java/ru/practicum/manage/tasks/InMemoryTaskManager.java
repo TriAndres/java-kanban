@@ -1,6 +1,8 @@
-package ru.practicum.manage;
+package ru.practicum.manage.tasks;
 
 import ru.practicum.exseption.ManagerValidateException;
+import ru.practicum.manage.Managers;
+import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -18,10 +20,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     protected final Set<Task> prioritized = new TreeSet<>(Comparator.comparing(Task::getStartTime));
-
-    public List<Task> getPrioritizedTasks() {
-        return List.copyOf(prioritized);
-    }
 
     public static Integer generateId() {
         return ++generateId;
@@ -129,7 +127,7 @@ public class InMemoryTaskManager implements TaskManager {
             task.setId(id);
             validate(task);
             taskMap.put(id, task);
-            prioritized.add(task);
+            prioritizedAdd(task);
         }
     }
 
@@ -151,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
             validate(subtask);
             Epic epic = epicMap.get(subtask.getEpicId());
             subtaskMap.put(id, subtask);
-            prioritized.add(subtask);
+            prioritizedAdd(subtask);
             epic.addSubtask(id);
             statusEpic(epic);
         }
@@ -160,7 +158,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         if (task == null) return;
-        if (!taskMap.containsKey(task.getId())){
+        if (!taskMap.containsKey(task.getId())) {
             validate(task);
             Task oldTask = taskMap.get(task.getId());
             taskMap.put(task.getId(), task);
@@ -168,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
             remove(oldTask.getId());
             add(task.getId());
             prioritizedRemove(oldTask);
-            prioritized.add(task);
+            prioritizedAdd(task);
         }
     }
 
@@ -199,14 +197,15 @@ public class InMemoryTaskManager implements TaskManager {
                 statusEpic(epic);
             }
             prioritizedRemove(oldSubtask);
-            prioritized.add(subtask);
+            prioritizedAdd(subtask);
         }
     }
 
     @Override
     public void deleteIdTask(Integer id) {
         if (taskMap.containsKey(id)) {
-            prioritizedRemove(taskMap.remove(id));
+            prioritizedRemove(taskMap.get(id));
+            taskMap.remove(id);
             remove(id);
         }
     }
@@ -231,7 +230,8 @@ public class InMemoryTaskManager implements TaskManager {
             epic.getSubtasksId().remove(id);
             statusEpic(epic);
             remove(id);
-            prioritizedRemove(subtaskMap.remove(id));
+            prioritizedRemove(subtaskMap.get(id));
+            subtaskMap.remove(id);
         }
     }
 
@@ -306,18 +306,18 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     public void validate(Task task) {
-       List<Task> tasks = new ArrayList<>(getPrioritizedTasks());
-       if (!tasks.isEmpty()) {
-           for (Task listTask : tasks) {
-               if (task.getStartTime().isBefore(listTask.getStartTime())
-                   && task.getEndTime().isBefore(listTask.getEndTime())
-                   || task.getStartTime().isAfter(listTask.getEndTime())
-                   && task.getEndTime().isAfter(listTask.getEndTime())) {
-               } else {
-                   throw new ManagerValidateException("Ошибка валидации");
-               }
-           }
-       }
+        List<Task> tasks = new ArrayList<>(getPrioritizedTasks());
+        if (!tasks.isEmpty()) {
+            for (Task listTask : tasks) {
+                if (task.getStartTime().isBefore(listTask.getStartTime())
+                        && task.getEndTime().isBefore(listTask.getEndTime())
+                        || task.getStartTime().isAfter(listTask.getEndTime())
+                        && task.getEndTime().isAfter(listTask.getEndTime())) {
+                } else {
+                    throw new ManagerValidateException("Ошибка валидации");
+                }
+            }
+        }
     }
 
     //методы из класса HistoryManager
@@ -341,7 +341,20 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(historyManager.getHistory());
     }
 
+    //методы из prioritized
     public void prioritizedRemove(Task task) {
-        prioritized.remove(task);
+        prioritized.removeIf(oldTask -> Objects.equals(oldTask.getId(), task.getId()));
+    }
+
+    public void prioritizedAdd(Task task) {
+        prioritized.add(task);
+    }
+
+    public List<Task> getPrioritizedTasks() {
+        return List.copyOf(prioritized);
+    }
+
+    public void prioritizedClear() {
+        prioritized.clear();
     }
 }

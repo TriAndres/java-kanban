@@ -1,6 +1,8 @@
-package ru.practicum.manage;
+package ru.practicum.manage.file;
 
 import ru.practicum.exseption.ManagerSaveException;
+import ru.practicum.manage.tasks.InMemoryTaskManager;
+import ru.practicum.manage.tasks.TaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -10,12 +12,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-
-import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -25,7 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-        File file = new File("src\\main\\java\\ru\\practicum\\manage\\test.csv");
+        File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
         TaskManager manager1 = loadFromFile(file);
         while (true) {
 

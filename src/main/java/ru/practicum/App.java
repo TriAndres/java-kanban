@@ -1,6 +1,6 @@
 package ru.practicum;
 
-import ru.practicum.manage.InMemoryTaskManager;
+import ru.practicum.manage.tasks.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;

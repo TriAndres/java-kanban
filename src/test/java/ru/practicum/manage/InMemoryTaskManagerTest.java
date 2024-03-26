@@ -2,6 +2,7 @@ package ru.practicum.manage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.practicum.manage.tasks.InMemoryTaskManager;
 import ru.practicum.model.Epic;
 import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
@@ -14,7 +15,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 public class InMemoryTaskManagerTest {
     InMemoryTaskManager manager;
@@ -59,9 +59,8 @@ public class InMemoryTaskManagerTest {
     @Test
     public void deleteIdTask() {
         Task task1 = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
-        Task task2 = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
+        Task task2 = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now().plusDays(1));
         manager.addNewTask(task1);
-        manager.prioritizedRemove(task2);
         manager.addNewTask(task2);
         assertEquals(2, manager.getTasks().size());
         System.out.println(manager.getTasks());
@@ -87,9 +86,8 @@ public class InMemoryTaskManagerTest {
         manager.addNewEpic(epic);
 
         Subtask subtask1 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
-        Subtask subtask2 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
+        Subtask subtask2 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now().plusDays(1), epic.getId());
         manager.addNewSubtask(subtask1);
-        manager.prioritizedRemove(subtask2);
         manager.addNewSubtask(subtask2);
         assertEquals(2, manager.getSubtasks().size());
         manager.deleteIdSubtask(subtask2.getId());
@@ -201,5 +199,4 @@ public class InMemoryTaskManagerTest {
 
         assertEquals(List.of(subtask), manager.getListSubtaskIdEpic(epic.getId()));
     }
-
 }

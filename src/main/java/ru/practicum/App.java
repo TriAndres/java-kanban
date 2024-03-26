@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 public class App {
     public static void main(String[] args) {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("новый эпик 1", "описание эпика 1", Status.NEW, Duration.ofMinutes(0), LocalDateTime.of(2022, 12, 30, 0, 30));
+        Epic epic = new Epic("новый эпик 1", "описание эпика 1", Status.NEW, Duration.ofMinutes(0),
+                LocalDateTime.of(2022, 12, 30, 0, 30));
         manager.addNewEpic(epic);
 //Данная задача должна быть 4 по счёту
         Subtask subtask1 = new Subtask("новая подзадача 1", "описание подзадачи 1", Status.NEW, Duration.ofMinutes(15),

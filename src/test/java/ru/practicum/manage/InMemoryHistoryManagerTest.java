@@ -1,6 +1,5 @@
 package ru.practicum.manage;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.practicum.model.Task;
 

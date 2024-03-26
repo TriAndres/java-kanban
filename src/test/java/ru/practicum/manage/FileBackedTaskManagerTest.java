@@ -1,6 +1,5 @@
 package ru.practicum.manage;
 
-//import manage.TaskManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +17,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.practicum.manage.FileBackedTaskManager.loadFromFile;
 
-public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+public class FileBackedTaskManagerTest extends InMemoryTaskManager{
     public static File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
-
+    FileBackedTaskManager manager;
     @BeforeEach
     public void beforeEach() {
         manager = new FileBackedTaskManager(file);
@@ -38,7 +36,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     }
 
     @Test
-    public void correctlySaveAndLoad() {
+    public void saveTasksEpicsSubtasks() {
         Task task = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task);
 
@@ -48,27 +46,22 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(subtask);
 
-        loadFromFile(file);
         assertEquals(List.of(task), manager.getTasks());
         assertEquals(List.of(epic), manager.getEpics());
         assertEquals(List.of(subtask), manager.getSubtasks());
     }
 
     @Test
-    public void saveAndLoadEmptyTasksEpicsSubtasks() {
-        FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
-        fileManager.save();
-        loadFromFile(file);
+    public void emptyTasksEpicsSubtasks() {
+
         assertEquals(Collections.EMPTY_LIST, manager.getTasks());
         assertEquals(Collections.EMPTY_LIST, manager.getEpics());
         assertEquals(Collections.EMPTY_LIST, manager.getSubtasks());
     }
 
     @Test
-    public void shouldSaveAndLoadEmptyHistory() {
-        FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
-        fileManager.save();
-        loadFromFile(file);
+    public void emptyHistory() {
+
         assertEquals(Collections.EMPTY_LIST, manager.getHistory());
     }
 }

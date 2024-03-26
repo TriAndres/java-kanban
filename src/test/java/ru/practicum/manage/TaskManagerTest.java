@@ -1,37 +1,23 @@
 package ru.practicum.manage;
 
+
 import org.junit.jupiter.api.Test;
-import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
-import ru.practicum.model.Subtask;
-import ru.practicum.model.Task;
+import ru.practicum.model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
 
-    protected Task addTask() {
-        return new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
-    }
-
-    protected Epic addEpic() {
-        return new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
-    }
-
-    protected Subtask addSubtask(Epic epic) {
-        return new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
-    }
-
     @Test
     public void addNewTask() {
-        Task task = addTask();
+        Task task = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task);
         List<Task> taskList = manager.getTasks();
         assertNotNull(task.getStatus());
@@ -41,7 +27,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void addNewEpic() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
         List<Epic> epicList = manager.getEpics();
         assertNotNull(epic.getStatus());
@@ -51,9 +37,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void addNewSubtask() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
-        Subtask subtask = addSubtask(epic);
+        Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(subtask);
         List<Subtask> subtaskList = manager.getSubtasks();
         assertNotNull(subtask.getStatus());
@@ -63,22 +49,22 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void deleteIdTask() {
-        Task task1 = addTask();
-        Task task2 = addTask();
+        Task task1 = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
+        Task task2 = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task1);
+        manager.prioritizedRemove(task2);
         manager.addNewTask(task2);
         assertEquals(2, manager.getTasks().size());
         System.out.println(manager.getTasks());
         manager.deleteIdTask(task2.getId());
         assertEquals(1, manager.getTasks().size());
         System.out.println(manager.getTasks());
-
     }
 
     @Test
     public void deleteIdEpic() {
-        Epic epic3 = addEpic();
-        Epic epic4 = addEpic();
+        Epic epic3 = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
+        Epic epic4 = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic3);
         manager.addNewEpic(epic4);
         assertEquals(2, manager.getEpics().size());
@@ -88,12 +74,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void deleteIdSubtask() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
 
-        Subtask subtask1 = addSubtask(epic);
-        Subtask subtask2 = addSubtask(epic);
+        Subtask subtask1 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
+        Subtask subtask2 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(subtask1);
+        manager.prioritizedRemove(subtask2);
         manager.addNewSubtask(subtask2);
         assertEquals(2, manager.getSubtasks().size());
         manager.deleteIdSubtask(subtask2.getId());
@@ -136,7 +123,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void updateSubtask() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
 
         Subtask task1 = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
@@ -157,7 +144,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void deleteAllTask() {
-        Task task = addTask();
+        Task task = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task);
 
         List<Task> taskList = manager.getTasks();
@@ -170,7 +157,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void deleteAllEpic() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
 
         List<Epic> epicList = manager.getEpics();
@@ -182,10 +169,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void deleteAllSubtask() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
 
-        Subtask subtask = addSubtask(epic);
+        Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(subtask);
 
         List<Subtask> subtaskList = manager.getSubtasks();
@@ -197,10 +184,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getListSubtaskIdEpic() {
-        Epic epic = addEpic();
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewEpic(epic);
 
-        Subtask subtask = addSubtask(epic);
+        Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(subtask);
 
         assertEquals(List.of(subtask), manager.getListSubtaskIdEpic(epic.getId()));

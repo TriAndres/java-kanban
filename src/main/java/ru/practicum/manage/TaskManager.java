@@ -1,9 +1,13 @@
 package ru.practicum.manage;
 
+import ru.practicum.exseption.ManagerValidateException;
 import ru.practicum.model.Epic;
+import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,4 +56,33 @@ public interface TaskManager {
 
     //Дополнительно
     List<Subtask> getListSubtaskIdEpic(Integer id);
+
+    default void statusEpic(Epic epic) {
+
+    }
+
+
+    default void setEpicDuration(Epic epic) {
+    }
+
+
+    default void validate(Task task) {
+    }
+
+    //методы из класса HistoryManager
+    default void add(int id) {
+    }
+
+    default void remove(Integer id) {
+
+    }
+
+    default ArrayList<Task> getHistory() {
+        return new ArrayList<>();
+    }
+
+    default void prioritizedRemove(Task task) {
+
+    }
+
 }

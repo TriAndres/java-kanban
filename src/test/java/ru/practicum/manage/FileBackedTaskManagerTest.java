@@ -19,17 +19,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FileBackedTaskManagerTest  extends InMemoryTaskManagerTest{
-    public static File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
-    FileBackedTaskManager manager;
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
     @BeforeEach
     public void beforeEach() {
+        File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
         manager = new FileBackedTaskManager(file);
     }
 
     @AfterEach
     public void afterEach() {
         try {
+            File file = new File("src\\test\\java\\ru\\practicum\\manage\\test2.csv");
             Files.delete(file.toPath());
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
@@ -41,10 +41,10 @@ public class FileBackedTaskManagerTest  extends InMemoryTaskManagerTest{
         Task task = new Task("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
         manager.addNewTask(task);
 
-        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now());
+        Epic epic = new Epic("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now().plusDays(1));
         manager.addNewEpic(epic);
 
-        Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now().plusDays(1), epic.getId());
+        Subtask subtask = new Subtask("name", "description", Status.NEW, Duration.ZERO, LocalDateTime.now().plusDays(2), epic.getId());
         manager.addNewSubtask(subtask);
 
 

@@ -1,4 +1,4 @@
-package ru.practicum.manage.memory.history;
+package ru.practicum.manage.history;
 
 import ru.practicum.model.Task;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-      class Node {
+      static class Node {
           protected Task task;
           protected Node nextTask;
           protected Node prevTask;

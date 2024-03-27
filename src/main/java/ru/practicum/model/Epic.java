@@ -1,61 +1,49 @@
 package ru.practicum.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks = new ArrayList<>();
+    private  ArrayList<Integer> subtasksId = new ArrayList<>();
+    private transient LocalDateTime endTime;
 
-    public Epic(String description) {
-        super(description);
-        this.id = getId();
-        setName("Эпик");
+    public Epic(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
+        this.endTime = super.getEndTime();
     }
 
-    public Epic(String name, String description, Status status) {
-        super(name, description, status);
-    }
-
-    public Epic(Integer id, String name, String description, Status status) {
-        super(id, name, description, status);
-    }
-
-    public Epic(Epic epic) {
-        super(epic);
-        this.subtasks = epic.subtasks;
+    public Epic(Integer id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+        this.endTime = super.getEndTime();
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasks() {
-        return subtasks;
+    public ArrayList<Integer> getSubtasksId() {
+        return subtasksId;
+    }
+
+    public void setSubtasksId(ArrayList<Integer> subtasksId) {
+        this.subtasksId = subtasksId;
     }
 
     @Override
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
+    public void addSubtask(int id) {
+        subtasksId.add(id);
     }
 
     @Override
-    public void addSubtask(Subtask subtask) {
-        subtasks.add(subtask);
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     @Override
-    public void removeSubtask(Subtask subtask) {
-        subtasks.remove(subtask);
-    }
-
-    @Override
-    public void clearSubtask() {
-        subtasks.clear();
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + ", id=" + id + ", name=" + name + ", description=" + description + ", status=" + status + "\n";
     }
 }

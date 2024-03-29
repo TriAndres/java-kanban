@@ -9,6 +9,7 @@ public class Subtask extends Task {
     public Subtask(String name, String description, Status status, Duration duration, LocalDateTime startTime, Integer idEpic) {
         super(name, description, status,  duration, startTime);
         this.idEpic = idEpic;
+        setTaskType(TaskType.SUBTASK);
     }
 
     public Subtask(Integer id, String name, String description, Status status, Duration duration, LocalDateTime startTime, Integer idEpic) {
@@ -16,19 +17,15 @@ public class Subtask extends Task {
         this.idEpic = idEpic;
     }
 
-    @Override
     public Integer getEpicId() {
         return idEpic;
     }
 
-    @Override
     public void setEpicId(Integer idEpic) {
         this.idEpic = idEpic;
     }
 
-    @Override
-    public TaskType getType() {
+    public TaskType getTaskType() {
         return TaskType.SUBTASK;
     }
-
 }

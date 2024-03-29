@@ -1,12 +1,9 @@
 package ru.practicum.manage.file;
 
-import ru.practicum.exseption.ManagerSaveException;
+import ru.practicum.manage.exseption.ManagerSaveException;
 import ru.practicum.manage.tasks.InMemoryTaskManager;
 import ru.practicum.manage.tasks.TaskManager;
-import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
-import ru.practicum.model.Subtask;
-import ru.practicum.model.Task;
+import ru.practicum.model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +22,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
-        TaskManager manager1 = loadFromFile(file);
+        FileBackedTaskManager manager1 = loadFromFile(file);
         while (true) {
 
             System.out.println("""
@@ -40,15 +37,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     manager1.addNewTask(new Task(
                             "Task 1", "Задача 1",
                             Status.NEW,
-                            Duration.ofMinutes(1L),
-                            LocalDateTime.now()
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(1)
 
                     ));
                     Epic epic2 = new Epic(
                             "Epic 2", "Эпик 2",
                             Status.NEW,
-                            Duration.ofMinutes(2L),
-                            LocalDateTime.now()
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(2)
 
                     );
                     manager1.addNewEpic(epic2);
@@ -56,9 +53,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     manager1.addNewSubtask(new Subtask(
                             "Subtask 3", "Субтаск 3",
                             Status.NEW,
-                            Duration.ofMinutes(3L),
-                            LocalDateTime.now(),
-
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(3),
                             epic2.getId()
 
                     ));
@@ -71,9 +67,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println(manager1.getTasks());
                     System.out.println(manager1.getEpics());
                     System.out.println(manager1.getSubtasks());
-
                     break;
             }
+            loadFromFile(file);
         }
     }
 
@@ -232,6 +228,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (task instanceof Task task1) {
                     fileBackedTaskManager.updateTask(task1);
                 }
+
             }
             String lineWithHistory = reader.readLine();
             for (int id : CSV.historyFromString(lineWithHistory)) {

@@ -1,4 +1,4 @@
-package ru.practicum.exseption;
+package ru.practicum.manage.exseption;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException(final String message) {

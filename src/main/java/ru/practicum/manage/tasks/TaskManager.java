@@ -1,13 +1,9 @@
 package ru.practicum.manage.tasks;
 
-import ru.practicum.exseption.ManagerValidateException;
 import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

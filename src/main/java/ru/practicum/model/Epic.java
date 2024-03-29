@@ -11,6 +11,7 @@ public class Epic extends Task {
     public Epic(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         super(name, description, status, duration, startTime);
         this.endTime = super.getEndTime();
+        setTaskType(TaskType.EPIC);
     }
 
     public Epic(Integer id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
@@ -18,7 +19,6 @@ public class Epic extends Task {
         this.endTime = super.getEndTime();
     }
 
-    @Override
     public ArrayList<Integer> getSubtasksId() {
         return subtasksId;
     }
@@ -27,23 +27,19 @@ public class Epic extends Task {
         this.subtasksId = subtasksId;
     }
 
-    @Override
     public void addSubtask(int id) {
         subtasksId.add(id);
     }
 
-    @Override
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    @Override
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    @Override
-    public TaskType getType() {
+    public TaskType getTaskType() {
         return TaskType.EPIC;
     }
 }

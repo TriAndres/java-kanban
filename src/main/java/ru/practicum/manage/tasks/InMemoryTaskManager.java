@@ -1,6 +1,6 @@
 package ru.practicum.manage.tasks;
 
-import ru.practicum.exseption.ManagerValidateException;
+import ru.practicum.manage.exseption.ManagerValidateException;
 import ru.practicum.manage.Managers;
 import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.Epic;
@@ -159,7 +159,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (task == null) return;
         if (!taskMap.containsKey(task.getId())) {
-            validate(task);
             Task oldTask = taskMap.get(task.getId());
             taskMap.put(task.getId(), task);
             if (oldTask == null) return;
@@ -185,7 +184,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubtask(Subtask subtask) {
         if (subtask == null) return;
         if (!subtaskMap.containsKey(subtask.getId())) {
-            validate(subtask);
             subtaskMap.put(subtask.getId(), subtask);
             Subtask oldSubtask = subtaskMap.get(subtask.getId());
             if (oldSubtask == null) return;

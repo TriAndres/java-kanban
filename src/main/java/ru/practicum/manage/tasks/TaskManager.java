@@ -53,14 +53,16 @@ public interface TaskManager {
     //Дополнительно
     List<Subtask> getListSubtaskIdEpic(Integer id);
 
+    default TaskManager getDefault() {
+        return null;
+    }
+
     default void statusEpic(Epic epic) {
 
     }
 
-
     default void setEpicDuration(Epic epic) {
     }
-
 
     default void validate(Task task) {
     }

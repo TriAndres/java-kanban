@@ -1,131 +1,95 @@
 package ru.practicum.manage.file;
 
-import ru.practicum.exseption.ManagerSaveException;
-import ru.practicum.manage.memory.task.InMemoryTaskManager;
-import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
-import ru.practicum.model.Subtask;
-import ru.practicum.model.Task;
+import ru.practicum.manage.exseption.ManagerSaveException;
+import ru.practicum.manage.tasks.InMemoryTaskManager;
+import ru.practicum.manage.tasks.TaskManager;
+import ru.practicum.model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    
+
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) {
         File file = new File("src\\main\\java\\ru\\practicum\\manage\\file\\test.csv");
-        FileBackedTaskManager manager = loadFromFile(file);
+        FileBackedTaskManager manager1 = loadFromFile(file);
         while (true) {
 
             System.out.println("""
                     Действие:
                     1 - тест1
                     2 - тест2
-                    3 - тест3
-                    4 - тест4
                     """);
             String line = new Scanner(System.in).nextLine();
             switch (line) {
                 case "1":
-                    manager.addNewTask(new Task("*** 1 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 1 ЭПИК ***"));
-                    manager.addNewTask(new Task("*** 2 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 2 ЭПИК ***"));
-                    manager.addNewTask(new Task("*** 3 ЗАДАЧА ***"));
-                    manager.addNewSubtask(new Subtask("*** 1 ПОДЗАДАЧА ***", 2));
-                    manager.addNewSubtask(new Subtask("*** 2 ПОДЗАДАЧА ***", 2));
-                    manager.addNewTask(new Task("*** 4 ЗАДАЧА ***"));
-                    manager.addNewTask(new Task("*** 5 ЗАДАЧА ***"));
-                    manager.addNewEpic(new Epic("*** 3 ЭПИК ***"));
+                    // Спринт 8
+                    manager1.addNewTask(new Task(
+                            "Task 1", "Задача 1",
+                            Status.NEW,
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(1)
 
-                    System.out.println(manager.getTaskId(3));
-                    System.out.println(manager.getSubtaskId(1));
-                    System.out.println(manager.getSubtaskId(2));
-                    System.out.println(manager.getEpicId(2));
-                    System.out.println(manager.getTaskId(4));
-                    System.out.println(manager.getTaskId(5));
+                    ));
+                    Epic epic2 = new Epic(
+                            "Epic 2", "Эпик 2",
+                            Status.NEW,
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(2)
 
-                    for (Task task : manager.getTasks()) {
-                        System.out.println(task.toString());
-                    }
+                    );
+                    manager1.addNewEpic(epic2);
 
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.toString());
-                    }
+                    manager1.addNewSubtask(new Subtask(
+                            "Subtask 3", "Субтаск 3",
+                            Status.NEW,
+                            Duration.ZERO,
+                            LocalDateTime.now().plusDays(3),
+                            epic2.getId()
 
-                    for (Subtask subtask : manager.getSubtasks()) {
-                        System.out.println(subtask.toString());
-                    }
+                    ));
+                    System.out.println(manager1.getTasks());
+                    System.out.println(manager1.getEpics());
+                    System.out.println(manager1.getSubtasks());
+
                     break;
                 case "2":
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
-
-                    for (Task task : manager.getTasks()) {
-                        System.out.println(task.toString());
-                    }
-
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.toString());
-
-                        System.out.println(epic.getId());
-
-                        for (Subtask subtask : epic.getSubtasks()) {
-                            System.out.println(subtask.getIdEpic());
-                        }
-                    }
-
-                    for (Subtask subtask : manager.getSubtasks()) {
-                        System.out.println(subtask.toString());
-                    }
-                    break;
-                case "3":
-
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
-
-                    for (Epic epic : manager.getEpics()) {
-                        System.out.println(epic.getId());
-                        System.out.println(epic.getSubtasks());
-                    }
-                    break;
-                case "4":
-
-                    System.out.println(manager.getSubtasks());
-                    System.out.println(manager.getTasks());
-                    System.out.println(manager.getEpics());
+                    System.out.println(manager1.getTasks());
+                    System.out.println(manager1.getEpics());
+                    System.out.println(manager1.getSubtasks());
                     break;
             }
+            loadFromFile(file);
         }
     }
 
     public void save() {
-        final String FIRST_LINE = "type,id,name,description,status,epicId\n";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,  StandardCharsets.UTF_8))) {
+        final String FIRST_LINE = "type,id,name,description,status,startTime,duration,epicId\n";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(FIRST_LINE);
             for (Task task : taskMap.values()) {
                 if (task != null) {
-                    writer.write(CSV.toString(task));
+                    writer.write(Objects.requireNonNull(CSV.toString(task)));
                 }
             }
             for (Epic epic : epicMap.values()) {
                 if (epic != null) {
-                    writer.write(CSV.toString(epic));
+                    writer.write(Objects.requireNonNull(CSV.toString(epic)));
                 }
             }
             for (Subtask subtask : subtaskMap.values()) {
                 if (subtask != null) {
-                    writer.write(CSV.toString(subtask));
+                    writer.write(Objects.requireNonNull(CSV.toString(subtask)));
                 }
             }
             writer.write(CSV.historyToString(historyManager));
@@ -249,39 +213,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
-        Status status = null;
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
-        List<String> strings = new ArrayList<>();
+        CSV csv = new CSV();
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (reader.ready()) {
                 String line = reader.readLine();
-                strings.add(line);
-            }
-            for (String string : strings) {
-                String[] line = string.split(",");
-                if (line.length >= 4) {
-                    status = switch (line[4]) {
-                        case "NEW" -> Status.NEW;
-                        case "IN_PROGRESS" -> Status.IN_PROGRESS;
-                        case "DONE" -> Status.DONE;
-                        default -> status;
-                    };
-                    if (line[0].equals("TASK")) {
-                        fileBackedTaskManager.updateTask(new Task(Integer.parseInt(line[1]), line[2], line[3], status));
-                    }
-                    if (line[0].equals("EPIC")) {
-                        fileBackedTaskManager.updateEpic(new Epic(Integer.parseInt(line[1]), line[2], line[3], status));
-                    }
-                    if (line[0].equals("SUBTASK")) {
-                        fileBackedTaskManager.updateSubtask(new Subtask(Integer.parseInt(line[1]), line[2], line[3], status, Integer.parseInt(line[5])));
-                    }
-                } else if (line[0].equals("type") || line[0].equals("History")) {
-                    continue;
+                Task task = csv.fromString(line);
+                if (task instanceof Epic epic) {
+                    fileBackedTaskManager.updateEpic(epic);
                 }
+                if (task instanceof Subtask subtask) {
+                    fileBackedTaskManager.updateSubtask(subtask);
+                }
+                if (task instanceof Task task1) {
+                    fileBackedTaskManager.updateTask(task1);
+                }
+
             }
+            String lineWithHistory = reader.readLine();
+            for (int id : CSV.historyFromString(lineWithHistory)) {
+                fileBackedTaskManager.add(id);
+            }
+
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при Чтении.");
         }
         return fileBackedTaskManager;
+    }
+
+    private static void lineWithHistory(int id) {
     }
 }

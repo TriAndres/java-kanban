@@ -1,4 +1,4 @@
-package ru.practicum.manage.exseption;
+package ru.practicum.manage.exseptionsMy;
 
 public class ManagerValidateException extends RuntimeException {
     public ManagerValidateException(String message) {

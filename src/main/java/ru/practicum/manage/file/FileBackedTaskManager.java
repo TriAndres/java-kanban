@@ -1,6 +1,6 @@
 package ru.practicum.manage.file;
 
-import ru.practicum.manage.exseption.ManagerSaveException;
+import ru.practicum.manage.exseptionsMy.ManagerSaveException;
 import ru.practicum.manage.tasks.InMemoryTaskManager;
 import ru.practicum.manage.tasks.TaskManager;
 import ru.practicum.model.*;
@@ -210,6 +210,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteIdSubtask(Integer id) {
         super.deleteIdSubtask(id);
         save();
+    }
+
+    @Override
+    public TaskManager getDefault() {
+        return super.getDefault();
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {

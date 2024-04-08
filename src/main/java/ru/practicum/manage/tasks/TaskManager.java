@@ -53,7 +53,7 @@ public interface TaskManager {
     //Дополнительно
     List<Subtask> getListSubtaskIdEpic(Integer id);
 
-    default TaskManager getDefault() {
+     default TaskManager getDefault() {
         return null;
     }
 

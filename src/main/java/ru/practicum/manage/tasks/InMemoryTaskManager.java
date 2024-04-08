@@ -1,6 +1,6 @@
 package ru.practicum.manage.tasks;
 
-import ru.practicum.manage.exseption.ManagerValidateException;
+import ru.practicum.manage.exseptionsMy.ManagerValidateException;
 import ru.practicum.manage.Managers;
 import ru.practicum.manage.history.HistoryManager;
 import ru.practicum.model.Epic;
@@ -316,6 +316,10 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
         }
+    }
+
+    public TaskManager getDefault() {
+        return new InMemoryTaskManager();
     }
 
     //методы из класса HistoryManager

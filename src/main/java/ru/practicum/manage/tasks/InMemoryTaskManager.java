@@ -147,8 +147,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subtaskMap.containsKey(id)) {
             subtask.setId(id);
             validate(subtask);
-            Epic epic = epicMap.get(subtask.getEpicId());
             subtaskMap.put(id, subtask);
+            Epic epic = epicMap.get(subtask.getEpicId());
             prioritizedAdd(subtask);
             epic.addSubtask(id);
             statusEpic(epic);

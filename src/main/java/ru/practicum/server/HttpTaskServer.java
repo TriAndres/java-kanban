@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpServer;
 import ru.practicum.manage.Managers;
 import ru.practicum.manage.tasks.TaskManager;
 import ru.practicum.model.Epic;
+import ru.practicum.model.Status;
 import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
@@ -15,7 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.sql.SQLOutput;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -35,12 +41,51 @@ public class HttpTaskServer {
         httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/task", new TaskHandler());
         gson = Managers.getGson();
+
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         HttpTaskServer userServer = new HttpTaskServer();
         userServer.start();
+
+        Task task1 = new Task("Задача", "description1", Status.NEW, Duration.ZERO,
+                LocalDateTime.of(2023, 1, 1, 0, 0));
+        userServer.taskManager.addNewTask(task1);
+
+        Epic epic2 = new Epic("Эпик", "description2",Status.NEW, Duration.ZERO,
+                LocalDateTime.of(2023, 1, 1, 0, 0));
+        userServer.taskManager.addNewEpic(epic2);
+
+        Subtask subtask3 = new Subtask("Подзадача", "description3", Status.NEW, Duration.ZERO,
+                LocalDateTime.of(2023, 1, 2, 0, 0).plusDays(1), epic2.getId());
+        userServer.taskManager.addNewSubtask(subtask3);
+
+        Subtask subtask4 = new Subtask("Подзадача", "description4", Status.NEW, Duration.ZERO,
+                LocalDateTime.of(2023, 1, 3, 0, 0).plusDays(2), epic2.getId());
+        userServer.taskManager.addNewSubtask(subtask4);
+
+        userServer.taskManager.getTaskId(1);
+        userServer.taskManager.getEpicId(2);
+        userServer.taskManager.getSubtaskId(3);
+        userServer.taskManager.getSubtaskId(4);
+
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/task/");
+        Task task2 = new Task("Задача", "description1", Status.NEW, Duration.ZERO,
+                LocalDateTime.of(2023, 1, 4, 0, 0).plusDays(3));
+        String json = userServer.gson.toJson(task2);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(body)
+                .uri(url)
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(body);
+        System.out.println(json);
+
         userServer.stop();
+
     }
 
     public void start() {
